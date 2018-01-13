@@ -1,5 +1,5 @@
-# Compiled class file
 *.class
+<<<<<<< HEAD
 
 # Log file
 *.log
@@ -22,3 +22,17 @@
 hs_err_pid*
 /.metadata/
 /bin/
+=======
+build/
+bin/
+*~
+.idea/
+*.iml
+dist/
+sysProps.xml
+.DS_Store
+*.out
+*.dSYM/
+out/
+*.pyc
+>>>>>>> 04586c61e77090770ec4bb854f8daea3a1886155
