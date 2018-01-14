@@ -50,6 +50,10 @@ public class Robot extends TimedRobot {
 		m_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
+		
+		DigitalInput forwardLimitSwitch = new DigitalInput(1);
+		DigitalInput reverseLimitSwitch = new DigitalInput(2);
+		
 	}
 
 	
@@ -102,7 +106,14 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 	//	RobotMap.componentmotorLeftThree.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
-	
+		
+		if (input.forwardLimitSwitch = true) {
+			RobotMap.Solenoid1.set(DoubleSolenoid.Value.kReverse);
+			RobotMap.componentmotorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
+		}
+		if (input.reverseLimitSwitch = true) {
+		}
+		motor.set(output);
 		if(!this.startedCommand) {
 			RobotMap.motorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, OI.joyStickOne.getRawAxis(1));
 			RobotMap.motorRightOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, -OI.joyStickOne.getRawAxis(5));
