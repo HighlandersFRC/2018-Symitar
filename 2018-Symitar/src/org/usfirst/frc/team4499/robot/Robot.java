@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team4499.robot;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -17,6 +18,8 @@ import org.usfirst.frc.team4499.robot.RobotMap;
 import org.usfirst.frc.team4499.robot.OI;
 import org.usfirst.frc.team4499.robot.commands.ExampleCommand;
 import org.usfirst.frc.team4499.robot.subsystems.ExampleSubsystem;
+import org.usfirst.frc.team4499.robot.RobotMap;
+import org.usfirst.frc.team4499.robot.commands.motionMagicDriveForward;
 
 // Give me something cause why not
 //Too broke
@@ -32,14 +35,17 @@ import org.usfirst.frc.team4499.robot.subsystems.ExampleSubsystem;
 public class Robot extends TimedRobot {
 	public static final ExampleSubsystem kExampleSubsystem
 			= new ExampleSubsystem();
-	public static OI m_oi;
+	public static OI m_oi;hlk
+	
 	public static boolean startedCommand;
-
+	private static motionMagicDriveForward drive;
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
 
 	@Override
 	public void robotInit() {
+		drive = new motionMagicDriveForward(100000, RobotMap.navx.getAngle());
+
 		m_oi = new OI();
 		m_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
@@ -59,6 +65,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void autonomousInit() {
+		drive.start();
 		m_autonomousCommand = m_chooser.getSelected();
 
 		/*
@@ -94,12 +101,63 @@ public class Robot extends TimedRobot {
 	
 	@Override
 	public void teleopPeriodic() {
+	//	RobotMap.componentmotorLeftThree.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
+	
 		if(!this.startedCommand) {
 			RobotMap.motorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, OI.joyStickOne.getRawAxis(1));
 			RobotMap.motorRightOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, -OI.joyStickOne.getRawAxis(5));
 			RobotMap.motorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, OI.joyStickOne.getRawAxis(1));
 			RobotMap.motorRightTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, -OI.joyStickOne.getRawAxis(5));
-					}
+					
+		
+			if(OI.outake.get())
+				
+			{
+				if(OI.pistonin.get()){
+					RobotMap.Solenoid1.set(DoubleSolenoid.Value.kForward);
+				}
+				
+				else{
+					RobotMap.Solenoid1.set(DoubleSolenoid.Value.kReverse);
+				}
+			
+				System.out.println("outtaking");
+				RobotMap.componentmotorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, -0.3);
+				RobotMap.componentmotorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0.3);
+                
+			}
+			else if(OI.intake.get())
+			{
+				if(OI.pistonin.get()){
+					RobotMap.Solenoid1.set(DoubleSolenoid.Value.kForward);
+				}
+			
+				else{
+					RobotMap.Solenoid1.set(DoubleSolenoid.Value.kReverse);
+				}
+				System.out.println("intaking");
+				RobotMap.componentmotorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 1.0);
+				RobotMap.componentmotorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, -1.0);	
+				System.out.println(RobotMap.componentmotorLeftOne.getMotorOutputPercent() + "left");
+				System.out.println(RobotMap.componentmotorLeftTwo.getMotorOutputPercent() + "Right");
+
+			}	
+			else{
+				if(OI.pistonin.get()){
+					RobotMap.Solenoid1.set(DoubleSolenoid.Value.kForward);
+				}
+			
+				else{
+					RobotMap.Solenoid1.set(DoubleSolenoid.Value.kReverse);
+				}
+				RobotMap.componentmotorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
+			    RobotMap.componentmotorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);	   
+				
+			}
+		
+		}
+		
+		
 		Scheduler.getInstance().run();
 	}
 
