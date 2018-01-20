@@ -9,6 +9,7 @@ package org.usfirst.frc.team4499.robot;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
+
 import edu.wpi.first.wpilibj.TimedRobot;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -22,6 +23,7 @@ import org.usfirst.frc.team4499.robot.commands.ExampleCommand;
 import org.usfirst.frc.team4499.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team4499.robot.RobotMap;
 import org.usfirst.frc.team4499.robot.commands.motionMagicDriveForward;
+
 import org.usfirst.frc.team4499.robot.commands.navxTurn;
 import org.usfirst.frc.team4499.robot.AutoCommands.CenterAutoLeft;
 
@@ -53,8 +55,8 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void robotInit() {
-	//	turn = new navxTurn(RobotMap.navx.getAngle()+ 45);
-	//	drive = new motionMagicDriveForward(120, RobotMap.navx.getAngle());
+		//turn = new navxTurn(RobotMap.navx.getAngle()+ 45);
+		drive = new motionMagicDriveForward(115, RobotMap.navx.getAngle(),250, 125);
 
 		m_oi = new OI();
 		m_chooser.addDefault("Default Auto", new ExampleCommand());
@@ -75,7 +77,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void autonomousInit() {
-		
+    	
 
 		
 		m_autonomousCommand = m_chooser.getSelected();
@@ -89,7 +91,12 @@ public class Robot extends TimedRobot {
 
 		// schedule the autonomous command (example)
 		if (m_autonomousCommand != null) {
-            Auto.start();
+            drive.start();
+            RobotMap.motorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
+        	RobotMap.motorRightTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
+        	RobotMap.motorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
+        	RobotMap.motorRightTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
+            
 			m_autonomousCommand.start();
 		}
 	}
@@ -102,6 +109,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
+	 	
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
@@ -114,65 +122,16 @@ public class Robot extends TimedRobot {
 	
 	@Override
 	public void teleopPeriodic() {
-	//	RobotMap.componentmotorLeftThree.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
 	
 	
 		
-			if(OI.outake.get())
-				
-			{
-				/*if(OI.pistonin.get()){
-					RobotMap.Solenoid1.set(DoubleSolenoid.Value.kForward);
-				}
-				
-				else{
-					RobotMap.Solenoid1.set(DoubleSolenoid.Value.kReverse);
-				}
-			
-				System.out.println("outtaking");
-				RobotMap.componentmotorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, -0.3);
-				RobotMap.componentmotorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0.3);
-                */
-				drive.start();
-			}
-			else {
-
-				RobotMap.motorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0.5* OI.joyStickOne.getRawAxis(1));
-				RobotMap.motorRightOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0.5* -OI.joyStickOne.getRawAxis(5));
-				RobotMap.motorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0.5* OI.joyStickOne.getRawAxis(1));
-				RobotMap.motorRightTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0.5* -OI.joyStickOne.getRawAxis(5));
-						
-			}
-			/*else if(OI.intake.get())
-			{
-				if(OI.pistonin.get()){
-					RobotMap.Solenoid1.set(DoubleSolenoid.Value.kForward);
-				}
-			
-				else{
-					RobotMap.Solenoid1.set(DoubleSolenoid.Value.kReverse);
-				}
-				System.out.println("intaking");
-				RobotMap.componentmotorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 1.0);
-				RobotMap.componentmotorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, -1.0);	
-				System.out.println(RobotMap.componentmotorLeftOne.getMotorOutputPercent() + "left");
-				System.out.println(RobotMap.componentmotorLeftTwo.getMotorOutputPercent() + "Right");
-
-			}	
-			else{
-				if(OI.pistonin.get()){
-					RobotMap.Solenoid1.set(DoubleSolenoid.Value.kForward);
-				}
-			
-				else{
-					RobotMap.Solenoid1.set(DoubleSolenoid.Value.kReverse);
-				}
-				RobotMap.componentmotorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
-			    RobotMap.componentmotorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);	   
-				
-			*/
+   System.out.println(RobotMap.motorRightTwo.getMotorOutputPercent());
+    RobotMap.motorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0.5* OI.joyStickOne.getRawAxis(1));
+	RobotMap.motorRightOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0.5* -OI.joyStickOne.getRawAxis(5));
+	RobotMap.motorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0.5* OI.joyStickOne.getRawAxis(1));
+	RobotMap.motorRightTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0.5* -OI.joyStickOne.getRawAxis(5));
 		
-		
+			
 		
 		Scheduler.getInstance().run();
 	}

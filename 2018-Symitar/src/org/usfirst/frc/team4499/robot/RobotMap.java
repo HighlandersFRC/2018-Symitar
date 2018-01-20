@@ -20,7 +20,7 @@ public class RobotMap {
 	public static TalonSRX componentmotorLeftTwo = new TalonSRX(8);
 //	public static TalonSRX componentmotorLeftThree = new TalonSRX(9);
 	public static float maxLeftRPM = 465.47f;
-	public static float maxRightRPM = 465.63f;
+	public static float maxRightRPM = 455.63f;
 
 	
 
