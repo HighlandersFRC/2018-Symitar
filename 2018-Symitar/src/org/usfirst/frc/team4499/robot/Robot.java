@@ -8,10 +8,12 @@
 package org.usfirst.frc.team4499.robot;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4499.robot.RobotMap;
@@ -20,6 +22,11 @@ import org.usfirst.frc.team4499.robot.commands.ExampleCommand;
 import org.usfirst.frc.team4499.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team4499.robot.RobotMap;
 import org.usfirst.frc.team4499.robot.commands.motionMagicDriveForward;
+import org.usfirst.frc.team4499.robot.commands.navxTurn;
+import org.usfirst.frc.team4499.robot.AutoCommands.CenterAutoLeft;
+
+
+
 
 // Give me something cause why not
 //Too broke
@@ -33,27 +40,26 @@ import org.usfirst.frc.team4499.robot.commands.motionMagicDriveForward;
  * project.
  */
 public class Robot extends TimedRobot {
+	
 	public static final ExampleSubsystem kExampleSubsystem
 			= new ExampleSubsystem();
-	public static OI m_oi;hlk
-	
+	public static OI m_oi;
+	private CenterAutoLeft Auto = new CenterAutoLeft();
 	public static boolean startedCommand;
-	private static motionMagicDriveForward drive;
+	private motionMagicDriveForward drive;
+	private navxTurn turn;
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
 
 	@Override
 	public void robotInit() {
-		drive = new motionMagicDriveForward(100000, RobotMap.navx.getAngle());
+	//	turn = new navxTurn(RobotMap.navx.getAngle()+ 45);
+	//	drive = new motionMagicDriveForward(120, RobotMap.navx.getAngle());
 
 		m_oi = new OI();
 		m_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
-		
-		DigitalInput forwardLimitSwitch = new DigitalInput(1);
-		DigitalInput reverseLimitSwitch = new DigitalInput(2);
-		
 	}
 
 	
@@ -69,7 +75,9 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void autonomousInit() {
-		drive.start();
+		
+
+		
 		m_autonomousCommand = m_chooser.getSelected();
 
 		/*
@@ -81,6 +89,7 @@ public class Robot extends TimedRobot {
 
 		// schedule the autonomous command (example)
 		if (m_autonomousCommand != null) {
+            Auto.start();
 			m_autonomousCommand.start();
 		}
 	}
@@ -106,25 +115,13 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 	//	RobotMap.componentmotorLeftThree.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
-		
-		if (input.forwardLimitSwitch = true) {
-			RobotMap.Solenoid1.set(DoubleSolenoid.Value.kReverse);
-			RobotMap.componentmotorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
-		}
-		if (input.reverseLimitSwitch = true) {
-		}
-		motor.set(output);
-		if(!this.startedCommand) {
-			RobotMap.motorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, OI.joyStickOne.getRawAxis(1));
-			RobotMap.motorRightOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, -OI.joyStickOne.getRawAxis(5));
-			RobotMap.motorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, OI.joyStickOne.getRawAxis(1));
-			RobotMap.motorRightTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, -OI.joyStickOne.getRawAxis(5));
-					
+	
+	
 		
 			if(OI.outake.get())
 				
 			{
-				if(OI.pistonin.get()){
+				/*if(OI.pistonin.get()){
 					RobotMap.Solenoid1.set(DoubleSolenoid.Value.kForward);
 				}
 				
@@ -135,9 +132,18 @@ public class Robot extends TimedRobot {
 				System.out.println("outtaking");
 				RobotMap.componentmotorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, -0.3);
 				RobotMap.componentmotorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0.3);
-                
+                */
+				drive.start();
 			}
-			else if(OI.intake.get())
+			else {
+
+				RobotMap.motorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0.5* OI.joyStickOne.getRawAxis(1));
+				RobotMap.motorRightOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0.5* -OI.joyStickOne.getRawAxis(5));
+				RobotMap.motorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0.5* OI.joyStickOne.getRawAxis(1));
+				RobotMap.motorRightTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0.5* -OI.joyStickOne.getRawAxis(5));
+						
+			}
+			/*else if(OI.intake.get())
 			{
 				if(OI.pistonin.get()){
 					RobotMap.Solenoid1.set(DoubleSolenoid.Value.kForward);
@@ -164,9 +170,8 @@ public class Robot extends TimedRobot {
 				RobotMap.componentmotorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
 			    RobotMap.componentmotorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);	   
 				
-			}
+			*/
 		
-		}
 		
 		
 		Scheduler.getInstance().run();
