@@ -123,8 +123,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 	
-	
-		
+		SmartDashboard.putBoolean( "IMU_Connected", RobotMap.navx.isConnected());
+   System.out.println(RobotMap.navx.getAngle());
    System.out.println(RobotMap.motorRightTwo.getMotorOutputPercent());
     RobotMap.motorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0.5* OI.joyStickOne.getRawAxis(1));
 	RobotMap.motorRightOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0.5* -OI.joyStickOne.getRawAxis(5));

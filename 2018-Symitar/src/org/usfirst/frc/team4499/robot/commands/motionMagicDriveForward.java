@@ -42,20 +42,20 @@ public class motionMagicDriveForward extends Command {
 	private double startAngle;
 	private double desiredAngle;
     public motionMagicDriveForward(float distance, double angle, double cruiseVelocity, int acceleration) {
-    	cruiseVelocityLeft = cruiseVelocity;
-    	cruiseVelocityRight = cruiseVelocity;
-    	initCruiseVelocityLeft = cruiseVelocityLeft;
-    	initCruiseVelocityRight = cruiseVelocityRight;
-    	AccelerationLeft= acceleration;
-    	AccelerationRight= acceleration;
-    	this.motionMagicEndPoint= (distance*4096.0f*2.5f/(((float)Math.PI * 6.5f)));
-    	this.nativeUnitsperCycleLeft = (RobotMap.maxLeftRPM) * (1.0f / 60.0f) * (1.0f/10.0f) * (4096.0f) * (1.0f/(1.0f));
+    cruiseVelocityLeft = cruiseVelocity;
+    cruiseVelocityRight = cruiseVelocity;
+    initCruiseVelocityLeft = cruiseVelocityLeft;
+    initCruiseVelocityRight = cruiseVelocityRight;
+    AccelerationLeft= acceleration;
+    AccelerationRight= acceleration;
+    this.motionMagicEndPoint= (distance*4096.0f*2.5f/(((float)Math.PI * 6.5f)));
+    this.nativeUnitsperCycleLeft = (RobotMap.maxLeftRPM) * (1.0f / 60.0f) * (1.0f/10.0f) * (4096.0f) * (1.0f/(1.0f));
     	
-    	this.nativeUnitsPerCycleRight = (RobotMap.maxRightRPM) * (1.0f / 60.0f) * (1.0f/10.0f) * (4096.0f) * (1.0f/1.0f);
-    	fGainLeft =(1.0f* 1023.0f)/this.nativeUnitsperCycleLeft;
-    	fGainRight = (1.0f* 1023.0f)/this.nativeUnitsPerCycleRight;
+    this.nativeUnitsPerCycleRight = (RobotMap.maxRightRPM) * (1.0f / 60.0f) * (1.0f/10.0f) * (4096.0f) * (1.0f/1.0f);
+    fGainLeft =(1.0f* 1023.0f)/this.nativeUnitsperCycleLeft;
+    fGainRight = (1.0f* 1023.0f)/this.nativeUnitsPerCycleRight;
         
-    	desiredAngle = angle;
+    desiredAngle = angle;
     
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -64,18 +64,22 @@ public class motionMagicDriveForward extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
    // Robot.startedCommand= true;
+    starttime = Timer.getFPGATimestamp();
+    
    
     RobotMap.motorLeftTwo.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 	RobotMap.motorRightTwo.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-	
+	RobotMap.motorLeftTwo.setSelectedSensorPosition(0,0,0);
+	RobotMap.motorRightTwo.setSelectedSensorPosition(0,0,0);
+
 	
 	RobotMap.motorRightTwo.setInverted(true);
 	RobotMap.motorLeftTwo.setInverted(true);
 	angleorientation = new PID(0, 0, 0);
     angleorientation.setContinuous(true);
     
-  	angleorientation.setPID(15.5, 1.6, 115.0);
-  	angleorientation.setSetPoint(desiredAngle);
+ 	angleorientation.setPID(5.5, 1.2, 500.6);
+  	angleorientation.setSetPoint(RobotMap.navx.getAngle());
   	RobotMap.motorRightOne.getSensorCollection().setQuadraturePosition(0, 0);
     RobotMap.motorLeftOne.getSensorCollection().setQuadraturePosition(0, 0);
     RobotMap.motorRightTwo.getSensorCollection().setQuadraturePosition(0, 0);
@@ -117,16 +121,13 @@ public class motionMagicDriveForward extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	System.out.println(this.motionMagicEndPoint+RobotMap.motorLeftTwo.getSelectedSensorPosition(0));
-    	
-    	System.out.println(RobotMap.motorRightTwo.getClosedLoopError(0));
-    	//System.out.println( RobotMap.motorLeftTwo.getSelectedSensorPosition(0)+"right");
-    	//System.out.println( RobotMap.motorRightTwo.getSelectedSensorPosition(0)+ "left");
-    	//System.out.println( this.motionMagicEndPoint);
+    System.out.println(RobotMap.motorRightTwo.getSelectedSensorPosition(0));
+    System.out.println(RobotMap.motorLeftTwo.getSelectedSensorPosition(0));
 
-    	SmartDashboard.putNumber("AngleResult", this.angleorientation.getResult());
-    	SmartDashboard.putNumber("AngleError", RobotMap.navx.getAngle()-desiredAngle);
-    	SmartDashboard.putNumber("Right Error", RobotMap.motorRightTwo.getClosedLoopError(0));
+    System.out.println(RobotMap.navx.getAngle());
+    SmartDashboard.putNumber("AngleResult", this.angleorientation.getResult());
+    //SmartDashboard.putNumber("AngleError", RobotMap.navx.getAngle()-desiredAngle);
+    SmartDashboard.putNumber("Right Error", RobotMap.motorRightTwo.getClosedLoopError(0));
     	
     angleorientation.updatePID(RobotMap.navx.getAngle());
     if(this.motionMagicEndPoint > 0){
@@ -155,11 +156,14 @@ public class motionMagicDriveForward extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-      	RobotMap.motorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
-    	RobotMap.motorRightTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
-    	RobotMap.motorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
-    	RobotMap.motorRightTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
-    	System.out.println(this.startAngle- RobotMap.navx.getAngle());
+    RobotMap.motorRightTwo.setInverted(false);
+    RobotMap.motorLeftTwo.setInverted(false);
+    angleorientation.setContinuous(false);
+    RobotMap.motorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
+    RobotMap.motorRightTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
+    RobotMap.motorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
+    RobotMap.motorRightTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
+    System.out.println(this.startAngle- RobotMap.navx.getAngle());
 
     }
     
@@ -167,6 +171,10 @@ public class motionMagicDriveForward extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	angleorientation.setContinuous(false);
+
+    	RobotMap.motorRightTwo.setInverted(false);
+    	RobotMap.motorLeftTwo.setInverted(false);
     	RobotMap.motorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
     	RobotMap.motorRightTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
     	RobotMap.motorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
