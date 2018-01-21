@@ -10,6 +10,7 @@ package org.usfirst.frc.team4499.robot;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 
+
 import edu.wpi.first.wpilibj.TimedRobot;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -23,6 +24,8 @@ import org.usfirst.frc.team4499.robot.commands.ExampleCommand;
 import org.usfirst.frc.team4499.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team4499.robot.RobotMap;
 import org.usfirst.frc.team4499.robot.commands.motionMagicDriveForward;
+import org.usfirst.frc.team4499.robot.commands.PercentOutPutDriveForward;
+
 
 import org.usfirst.frc.team4499.robot.commands.navxTurn;
 import org.usfirst.frc.team4499.robot.AutoCommands.CenterAutoLeft;
@@ -49,6 +52,7 @@ public class Robot extends TimedRobot {
 	private CenterAutoLeft Auto = new CenterAutoLeft();
 	public static boolean startedCommand;
 	private motionMagicDriveForward drive;
+	private PercentOutPutDriveForward drive2;
 	private navxTurn turn;
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -56,7 +60,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		//turn = new navxTurn(RobotMap.navx.getAngle()+ 45);
-		drive = new motionMagicDriveForward(100, RobotMap.navx.getAngle(),250, 125);
+		drive = new motionMagicDriveForward(150, RobotMap.navx.getAngle(),300, 150);
+		drive2 = new PercentOutPutDriveForward();
 
 		m_oi = new OI();
 		m_chooser.addDefault("Default Auto", new ExampleCommand());
@@ -123,9 +128,9 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 	
-		SmartDashboard.putBoolean( "IMU_Connected", RobotMap.navx.isConnected());
-   System.out.println(RobotMap.navx.getAngle());
-   System.out.println(RobotMap.motorRightTwo.getMotorOutputPercent());
+	SmartDashboard.putBoolean( "IMU_Connected", RobotMap.navx.isConnected());
+    System.out.println(RobotMap.navx.getAngle());
+    System.out.println(RobotMap.motorRightTwo.getMotorOutputPercent());
     RobotMap.motorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0.5* OI.joyStickOne.getRawAxis(1));
 	RobotMap.motorRightOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0.5* -OI.joyStickOne.getRawAxis(5));
 	RobotMap.motorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0.5* OI.joyStickOne.getRawAxis(1));

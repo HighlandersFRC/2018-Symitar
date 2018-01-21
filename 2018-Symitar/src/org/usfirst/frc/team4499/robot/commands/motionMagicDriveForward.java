@@ -3,6 +3,7 @@ package org.usfirst.frc.team4499.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 
 
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
@@ -55,8 +56,8 @@ public class motionMagicDriveForward extends Command {
     this.nativeUnitsperCycleLeft = (RobotMap.maxLeftRPM) * (1.0f / 60.0f) * (1.0f/10.0f) * (4096.0f) * (1.0f/(1.0f));
     	
     this.nativeUnitsPerCycleRight = (RobotMap.maxRightRPM) * (1.0f / 60.0f) * (1.0f/10.0f) * (4096.0f) * (1.0f/1.0f);
-    fGainLeft =(1.0f* 1023.0f)/this.nativeUnitsperCycleLeft;
-    fGainRight = (1.0f* 1023.0f)/this.nativeUnitsPerCycleRight;
+    fGainLeft =0.29627f;
+    fGainRight =0.28341f;
         
     desiredAngle = angle;
     
@@ -105,18 +106,18 @@ public class motionMagicDriveForward extends Command {
 	RobotMap.motorRightTwo.configPeakOutputReverse(-0.9, 0);
 	RobotMap.motorRightTwo.configNominalOutputReverse(0, 0);
 	//setting pid value for both sides
-    RobotMap.motorLeftTwo.config_kP(0, 0.00008, 0);
-	RobotMap.motorLeftTwo.config_kI(0, 0.000000008, 0);	
-	RobotMap.motorLeftTwo.config_IntegralZone(0, 0, 0);
-	RobotMap.motorLeftTwo.config_kD(0, 0.14, 0);
-	RobotMap.motorLeftTwo.config_kF(0, this.fGainLeft, 0);//0.3625884);
-	RobotMap.motorLeftTwo.configAllowableClosedloopError(0, 300, 0);//300);
-	RobotMap.motorRightTwo.config_kP(0, 0.000023, 0);
-    RobotMap.motorRightTwo.config_kI(0, 0.000000004, 0);
-	RobotMap.motorRightTwo.config_IntegralZone(0, 0, 0);
-	RobotMap.motorRightTwo.config_kD(0, 0.14, 0);
-	RobotMap.motorRightTwo.config_kF(0, this.fGainRight- 0.000, 0);//0.3625884);
-	RobotMap.motorRightTwo.configAllowableClosedloopError(0, 300, 0);
+  //  RobotMap.motorLeftTwo.config_kP(0, 0.00008, 0);
+  //	RobotMap.motorLeftTwo.config_kI(0, 0.000000008, 0);	
+  //	RobotMap.motorLeftTwo.config_IntegralZone(0, 0, 0);
+  //	RobotMap.motorLeftTwo.config_kD(0, 0.14, 0);
+  	RobotMap.motorLeftTwo.config_kF(0, this.fGainLeft, 0);//0.3625884);
+  //	RobotMap.motorLeftTwo.configAllowableClosedloopError(0, 300, 0);//300);
+  //	RobotMap.motorRightTwo.config_kP(0, 0.000023, 0);
+  //  RobotMap.motorRightTwo.config_kI(0, 0.000000004, 0);
+  //	RobotMap.motorRightTwo.config_IntegralZone(0, 0, 0);
+  //	RobotMap.motorRightTwo.config_kD(0, 0.14, 0);
+  	RobotMap.motorRightTwo.config_kF(0, this.fGainRight- 0.000, 0);//0.3625884);
+  //	RobotMap.motorRightTwo.configAllowableClosedloopError(0, 300, 0);
 	
     RobotMap.motorLeftTwo.configMotionCruiseVelocity((int)(this.cruiseVelocityLeft*4096)/600, 0);
     RobotMap.motorRightTwo.configMotionCruiseVelocity((int)(this.cruiseVelocityRight*4096)/600, 0);
@@ -134,7 +135,7 @@ public class motionMagicDriveForward extends Command {
 
     System.out.println(RobotMap.navx.getAngle()+ " navx Output");
     SmartDashboard.putNumber("AngleResult", this.angleorientation.getResult());
-    //SmartDashboard.putNumber("AngleError", RobotMap.navx.getAngle()-desiredAngle);
+    SmartDashboard.putNumber("AngleError", RobotMap.navx.getAngle()-desiredAngle);
     SmartDashboard.putNumber("Right Error", RobotMap.motorRightTwo.getClosedLoopError(0));
     	
     angleorientation.updatePID(RobotMap.navx.getAngle());
@@ -167,6 +168,8 @@ public class motionMagicDriveForward extends Command {
     RobotMap.motorRightTwo.setInverted(false);
     RobotMap.motorLeftTwo.setInverted(false);
     angleorientation.setContinuous(false);
+    SmartDashboard.putNumber("Left Position", RobotMap.motorLeftTwo.getSelectedSensorPosition(0));
+    SmartDashboard.putNumber("Right Position", RobotMap.motorLeftTwo.getSelectedSensorPosition(0));
     RobotMap.motorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
     RobotMap.motorRightTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
     RobotMap.motorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
