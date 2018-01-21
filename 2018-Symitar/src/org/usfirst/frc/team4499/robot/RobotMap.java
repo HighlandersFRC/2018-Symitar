@@ -11,12 +11,17 @@ import edu.wpi.first.wpilibj.I2C;
 
 
 public class RobotMap {
+	public static int rightTwoTalonID = 4; // Right Two is Green ID 4
+	public static int leftTwoTalonID = 3; //Left Two is Yellow, ID 3
+	public static int rightOneTalonID = 1; //Right One is Blue, ID 1
+	public static int leftOneTalonID = 2; //Left One is Red, ID 2
+
 	public static AHRS navx = new AHRS(I2C.Port.kMXP);
 	public static DoubleSolenoid Solenoid1 = new DoubleSolenoid(0,1);
-	public static TalonSRX motorRightOne = new TalonSRX(1);
-	public static TalonSRX motorRightTwo = new TalonSRX(4);
-	public static TalonSRX motorLeftOne = new TalonSRX(2);
-	public static TalonSRX motorLeftTwo = new TalonSRX(3);
+	public static TalonSRX motorRightOne = new TalonSRX(rightOneTalonID);
+	public static TalonSRX motorRightTwo = new TalonSRX(rightTwoTalonID);
+	public static TalonSRX motorLeftOne = new TalonSRX(leftOneTalonID);
+	public static TalonSRX motorLeftTwo = new TalonSRX(leftTwoTalonID);
 	
 	public static TalonSRX componentmotorLeftOne = new TalonSRX(7);
 	public static TalonSRX componentmotorLeftTwo = new TalonSRX(8);

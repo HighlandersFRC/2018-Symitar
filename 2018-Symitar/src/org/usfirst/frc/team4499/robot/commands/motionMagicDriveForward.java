@@ -41,6 +41,9 @@ public class motionMagicDriveForward extends Command {
 	private double initCruiseVelocityRight = cruiseVelocityRight;
 	private double startAngle;
 	private double desiredAngle;
+
+
+	
     public motionMagicDriveForward(float distance, double angle, double cruiseVelocity, int acceleration) {
     cruiseVelocityLeft = cruiseVelocity;
     cruiseVelocityRight = cruiseVelocity;
@@ -65,29 +68,34 @@ public class motionMagicDriveForward extends Command {
     protected void initialize() {
    // Robot.startedCommand= true;
     starttime = Timer.getFPGATimestamp();
+  
     
-   
+	
     RobotMap.motorLeftTwo.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 	RobotMap.motorRightTwo.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 	RobotMap.motorLeftTwo.setSelectedSensorPosition(0,0,0);
 	RobotMap.motorRightTwo.setSelectedSensorPosition(0,0,0);
-
 	
-	RobotMap.motorRightTwo.setInverted(true);
-	RobotMap.motorLeftTwo.setInverted(true);
+  //  RobotMap.motorLeftTwo.setSensorPhase(true);
+  //  RobotMap.motorRightTwo.setSensorPhase(true);
+	
+	RobotMap.motorRightTwo.setInverted(false);
+	RobotMap.motorLeftTwo.setInverted(false);
+	RobotMap.motorRightOne.setInverted(false);
+	RobotMap.motorLeftOne.setInverted(false);
 	angleorientation = new PID(0, 0, 0);
     angleorientation.setContinuous(true);
-    
- 	angleorientation.setPID(5.5, 1.2, 500.6);
+    //comment this line to diable the navx
+ 	angleorientation.setPID(25.5, 0, 0);
   	angleorientation.setSetPoint(RobotMap.navx.getAngle());
   	RobotMap.motorRightOne.getSensorCollection().setQuadraturePosition(0, 0);
     RobotMap.motorLeftOne.getSensorCollection().setQuadraturePosition(0, 0);
     RobotMap.motorRightTwo.getSensorCollection().setQuadraturePosition(0, 0);
     RobotMap.motorLeftTwo.getSensorCollection().setQuadraturePosition(0, 0);
-	RobotMap.motorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.MotionMagic,this.motionMagicEndPoint);		
-	RobotMap.motorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.Follower, 4);	
-	RobotMap.motorRightTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.MotionMagic,-this.motionMagicEndPoint);	
-	RobotMap.motorRightOne.set(com.ctre.phoenix.motorcontrol.ControlMode.Follower, 3);	
+    RobotMap.motorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.MotionMagic,-this.motionMagicEndPoint);		
+	RobotMap.motorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.Follower, RobotMap.leftTwoTalonID);	
+	RobotMap.motorRightTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.MotionMagic,this.motionMagicEndPoint);	
+	RobotMap.motorRightOne.set(com.ctre.phoenix.motorcontrol.ControlMode.Follower, RobotMap.rightTwoTalonID);	
 	RobotMap.motorLeftTwo.configPeakOutputForward(0.9, 0);
 	RobotMap.motorLeftTwo.configNominalOutputForward(0, 0);
 	RobotMap.motorRightTwo.configPeakOutputForward(0.9, 0);
@@ -109,7 +117,7 @@ public class motionMagicDriveForward extends Command {
 	RobotMap.motorRightTwo.config_kD(0, 0.14, 0);
 	RobotMap.motorRightTwo.config_kF(0, this.fGainRight- 0.000, 0);//0.3625884);
 	RobotMap.motorRightTwo.configAllowableClosedloopError(0, 300, 0);
-    
+	
     RobotMap.motorLeftTwo.configMotionCruiseVelocity((int)(this.cruiseVelocityLeft*4096)/600, 0);
     RobotMap.motorRightTwo.configMotionCruiseVelocity((int)(this.cruiseVelocityRight*4096)/600, 0);
 
@@ -124,19 +132,19 @@ public class motionMagicDriveForward extends Command {
     System.out.println(RobotMap.motorRightTwo.getSelectedSensorPosition(0));
     System.out.println(RobotMap.motorLeftTwo.getSelectedSensorPosition(0));
 
-    System.out.println(RobotMap.navx.getAngle());
+    System.out.println(RobotMap.navx.getAngle()+ " navx Output");
     SmartDashboard.putNumber("AngleResult", this.angleorientation.getResult());
     //SmartDashboard.putNumber("AngleError", RobotMap.navx.getAngle()-desiredAngle);
     SmartDashboard.putNumber("Right Error", RobotMap.motorRightTwo.getClosedLoopError(0));
     	
     angleorientation.updatePID(RobotMap.navx.getAngle());
     if(this.motionMagicEndPoint > 0){
-        cruiseVelocityLeft = (float) (this.initCruiseVelocityLeft+ angleorientation.getResult());
-        cruiseVelocityRight = (float) (this.initCruiseVelocityRight - angleorientation.getResult());
+        cruiseVelocityLeft = (float) (this.initCruiseVelocityLeft- angleorientation.getResult());
+        cruiseVelocityRight = (float) (this.initCruiseVelocityRight + angleorientation.getResult());
     	        }
-    if(this.motionMagicEndPoint <= 0){
-    	cruiseVelocityLeft = (float) (this.initCruiseVelocityLeft- angleorientation.getResult());
-    	cruiseVelocityRight = (float) (this.initCruiseVelocityRight + angleorientation.getResult());
+    else{
+    	cruiseVelocityLeft = (float) (this.initCruiseVelocityLeft+ angleorientation.getResult());
+    	cruiseVelocityRight = (float) (this.initCruiseVelocityRight - angleorientation.getResult());
     	       }
     RobotMap.motorLeftTwo.configMotionCruiseVelocity((int)(this.cruiseVelocityLeft*4096)/600, 0);
     RobotMap.motorRightTwo.configMotionCruiseVelocity((int)(this.cruiseVelocityRight*4096)/600, 0);

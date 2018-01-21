@@ -56,7 +56,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		//turn = new navxTurn(RobotMap.navx.getAngle()+ 45);
-		drive = new motionMagicDriveForward(115, RobotMap.navx.getAngle(),250, 125);
+		drive = new motionMagicDriveForward(100, RobotMap.navx.getAngle(),250, 125);
 
 		m_oi = new OI();
 		m_chooser.addDefault("Default Auto", new ExampleCommand());
