@@ -60,7 +60,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		//turn = new navxTurn(RobotMap.navx.getAngle()+ 45);
-		drive = new motionMagicDriveForward(150, RobotMap.navx.getAngle(),300, 150);
+		drive = new motionMagicDriveForward(100, RobotMap.navx.getAngle(),300, 150);
 		drive2 = new PercentOutPutDriveForward();
 
 		m_oi = new OI();

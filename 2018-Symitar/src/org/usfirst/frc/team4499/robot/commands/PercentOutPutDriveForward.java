@@ -43,6 +43,7 @@ public class PercentOutPutDriveForward extends Command {
     // Called repeatedly when this Command is scheduled to run
     //to find the fvalue, use Self test to find the Percent Output
     //then, do ([PercentOutput] *1023)/Native units per 100ms;
+    //find this on https://github.com/CrossTheRoadElec/Phoenix-Documentation/blob/master/README.md
     protected void execute() {
     	RobotMap.motorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,-0.5);
     	RobotMap.motorRightOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0.5);
