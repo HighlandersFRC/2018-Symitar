@@ -107,7 +107,7 @@ public class motionMagicDriveForward extends Command {
 	angleorientation = new PID(0, 0, 0);
     angleorientation.setContinuous(true);
     //comment this line to diable the navx
- 	//angleorientation.setPID(12.5, 0, 0);
+ 	angleorientation.setPID(9.5, 0.0, 0);
   	angleorientation.setSetPoint(RobotMap.navx.getAngle());
   	RobotMap.motorRightOne.getSensorCollection().setQuadraturePosition(0, 0);
     RobotMap.motorLeftOne.getSensorCollection().setQuadraturePosition(0, 0);
@@ -126,14 +126,14 @@ public class motionMagicDriveForward extends Command {
 	RobotMap.motorRightTwo.configPeakOutputReverse(-0.9, 0);
 	RobotMap.motorRightTwo.configNominalOutputReverse(0, 0);
 	//setting pid value for both sides
-  //  RobotMap.motorLeftTwo.config_kP(0, 0.00008, 0);
-  //	RobotMap.motorLeftTwo.config_kI(0, 0.000000008, 0);	
+    RobotMap.motorLeftTwo.config_kP(0, 0.00045, 0);
+  	RobotMap.motorLeftTwo.config_kI(0, 0.00000009, 0);	
   //	RobotMap.motorLeftTwo.config_IntegralZone(0, 0, 0);
   //	RobotMap.motorLeftTwo.config_kD(0, 0.14, 0);
   	RobotMap.motorLeftTwo.config_kF(0, this.fGainLeft, 0);//0.3625884);
   //	RobotMap.motorLeftTwo.configAllowableClosedloopError(0, 300, 0);//300);
-  //	RobotMap.motorRightTwo.config_kP(0, 0.000023, 0);
-  //  RobotMap.motorRightTwo.config_kI(0, 0.000000004, 0);
+  	RobotMap.motorRightTwo.config_kP(0, 0.00045, 0);
+    RobotMap.motorRightTwo.config_kI(0, 0.000000009, 0);
   //	RobotMap.motorRightTwo.config_IntegralZone(0, 0, 0);
   //	RobotMap.motorRightTwo.config_kD(0, 0.14, 0);
   	RobotMap.motorRightTwo.config_kF(0, this.fGainRight- 0.000, 0);//0.3625884);
