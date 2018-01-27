@@ -27,6 +27,8 @@ import org.usfirst.frc.team4499.robot.RobotMap;
 import org.usfirst.frc.team4499.robot.commands.navxTurn;
 import org.usfirst.frc.team4499.robot.commands.motionMagicDriveForward;
 import org.usfirst.frc.team4499.robot.commands.PercentOutPutDriveForward;
+import org.usfirst.frc.team4499.robot.commands.controlDriveTrain;
+
 
 
 import org.usfirst.frc.team4499.robot.commands.navxTurn;
@@ -56,13 +58,15 @@ public class Robot extends TimedRobot {
 	private motionMagicDriveForward drive;
 	private PercentOutPutDriveForward drive2;
 	private navxTurn turn;
+	private controlDriveTrain control;
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
 
 	@Override
 	public void robotInit() {
+		control = new controlDriveTrain(RobotMap.motorLeftOne, RobotMap.motorLeftTwo, RobotMap.motorRightOne, RobotMap.motorRightTwo);
 		//turn = new navxTurn(RobotMap.navx.getAngle()+ 45);
-		drive = new motionMagicDriveForward(110, RobotMap.navx.getAngle(),300, 150);
+		drive = new motionMagicDriveForward(20.35, RobotMap.navx.getAngle(),300, 150);
 		drive2 = new PercentOutPutDriveForward();
 
 		m_oi = new OI();
@@ -130,14 +134,12 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		
-	
+	System.out.println(RobotMap.motorLeftTwo.getOutputCurrent());
 	SmartDashboard.putBoolean( "IMU_Connected", RobotMap.navx.isConnected());
-    System.out.println(RobotMap.navx.getAngle()+ " navx Angle X");
+   // System.out.println(RobotMap.navx.getAngle()+ " navx Angle X");
+    control.start();
+	
     
-    RobotMap.motorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0.5* OI.joyStickOne.getRawAxis(1));
-	RobotMap.motorRightOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0.5* -OI.joyStickOne.getRawAxis(5));
-	RobotMap.motorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0.5* OI.joyStickOne.getRawAxis(1));
-	RobotMap.motorRightTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0.5* -OI.joyStickOne.getRawAxis(5));
 		
 			
 		

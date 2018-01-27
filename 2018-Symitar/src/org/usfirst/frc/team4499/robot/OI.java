@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  */
 public class OI {
 	public static Joystick joyStickOne = new Joystick(0);
-	public static JoystickButton intake = new JoystickButton(joyStickOne,5);
-	public static JoystickButton outake = new JoystickButton(joyStickOne,6);
+	public static JoystickButton disableStallProtection = new JoystickButton(joyStickOne,5);
+	public static JoystickButton enableStallProtection = new JoystickButton(joyStickOne,6);
 	public static JoystickButton pistonin = new JoystickButton(joyStickOne,1);
 	public static JoystickButton pistonout = new JoystickButton(joyStickOne,4);
 	
