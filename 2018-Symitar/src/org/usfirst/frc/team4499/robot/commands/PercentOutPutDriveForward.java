@@ -38,6 +38,21 @@ public class PercentOutPutDriveForward extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	startTime = Timer.getFPGATimestamp();
+        RobotMap.motorLeftTwo.configVoltageCompSaturation(RobotMap.voltageControlMax, 10);
+        RobotMap.motorLeftTwo.enableVoltageCompensation(true); 
+        RobotMap.motorLeftTwo.configVoltageMeasurementFilter(32, 10);
+        
+        RobotMap.motorRightTwo.configVoltageCompSaturation(RobotMap.voltageControlMax, 10);
+        RobotMap.motorRightTwo.enableVoltageCompensation(true); 
+        RobotMap.motorRightTwo.configVoltageMeasurementFilter(32, 10);
+        
+        RobotMap.motorLeftOne.configVoltageCompSaturation(RobotMap.voltageControlMax, 10);
+        RobotMap.motorLeftOne.enableVoltageCompensation(true); 
+        RobotMap.motorLeftOne.configVoltageMeasurementFilter(32, 10);
+        
+        RobotMap.motorRightOne.configVoltageCompSaturation(RobotMap.voltageControlMax, 10);
+        RobotMap.motorRightOne.enableVoltageCompensation(true);
+        RobotMap.motorRightOne.configVoltageMeasurementFilter(32, 10);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -61,10 +76,18 @@ public class PercentOutPutDriveForward extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	RobotMap.motorLeftTwo.enableVoltageCompensation(false);
+        RobotMap.motorRightTwo.enableVoltageCompensation(false);
+        RobotMap.motorLeftOne.enableVoltageCompensation(false);
+        RobotMap.motorRightOne.enableVoltageCompensation(false);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	RobotMap.motorLeftTwo.enableVoltageCompensation(false);
+        RobotMap.motorRightTwo.enableVoltageCompensation(false);
+        RobotMap.motorLeftOne.enableVoltageCompensation(false);
+        RobotMap.motorRightOne.enableVoltageCompensation(false);
     }
 }

@@ -23,7 +23,10 @@ public class RobotMap {
     public static double wheelDiam = 6.2;
     public static double wheelCircum = Math.PI * wheelDiam;
 	public static AHRS navx = new AHRS(I2C.Port.kMXP);
-	public static DoubleSolenoid Solenoid1 = new DoubleSolenoid(0,1);
+	public static float maxLeftRPM = 465.47f;
+	public static float maxRightRPM = 455.63f;
+	public static double voltageControlMax = 11.0;
+	//public static DoubleSolenoid Solenoid1 = new DoubleSolenoid(0,1);
 	public static TalonSRX motorRightOne = new TalonSRX(rightOneTalonID);
 	public static TalonSRX motorRightTwo = new TalonSRX(rightTwoTalonID);
 	public static TalonSRX motorLeftOne = new TalonSRX(leftOneTalonID);
@@ -32,8 +35,7 @@ public class RobotMap {
 	public static TalonSRX componentmotorLeftOne = new TalonSRX(7);
 	public static TalonSRX componentmotorLeftTwo = new TalonSRX(8);
 //	public static TalonSRX componentmotorLeftThree = new TalonSRX(9);
-	public static float maxLeftRPM = 465.47f;
-	public static float maxRightRPM = 455.63f;
+	
 
 	
 

@@ -45,9 +45,9 @@ public class motionMagicDriveForward extends Command {
 	private double pGainLeft;
 	private double pGainRight;
 
-
 	
     public motionMagicDriveForward(double distance, double angle, double cruiseVelocity, int acceleration) {
+    
     cruiseVelocityLeft = cruiseVelocity;
     cruiseVelocityRight = cruiseVelocity;
     initCruiseVelocityLeft = cruiseVelocityLeft;
@@ -61,8 +61,8 @@ public class motionMagicDriveForward extends Command {
     //to find the fvalue, use Self test to find the Percent Output
     //then, do ([PercentOutput] *1023)/Native units per 100ms;
     //find this on https://github.com/CrossTheRoadElec/Phoenix-Documentation/blob/master/README.md
-    fGainLeft =0.28341f;//0.29627f;
-    fGainRight =fGainLeft;//+ 0.008f;//0.28341f;
+    fGainLeft =0.319145f;//0.29627f;
+    fGainRight =fGainLeft + 0.020f;//+ 0.008f;//0.28341f;
     pGainLeft = 0;
     pGainRight= 0;
         
@@ -76,8 +76,21 @@ public class motionMagicDriveForward extends Command {
     protected void initialize() {
    // Robot.startedCommand= true;
     starttime = Timer.getFPGATimestamp();
-  
+    RobotMap.motorLeftTwo.configVoltageCompSaturation(RobotMap.voltageControlMax, 10);
+    RobotMap.motorLeftTwo.enableVoltageCompensation(true); 
+    RobotMap.motorLeftTwo.configVoltageMeasurementFilter(32, 10);
     
+    RobotMap.motorRightTwo.configVoltageCompSaturation(RobotMap.voltageControlMax, 10);
+    RobotMap.motorRightTwo.enableVoltageCompensation(true); 
+    RobotMap.motorRightTwo.configVoltageMeasurementFilter(32, 10);
+    
+    RobotMap.motorLeftOne.configVoltageCompSaturation(RobotMap.voltageControlMax, 10);
+    RobotMap.motorLeftOne.enableVoltageCompensation(true); 
+    RobotMap.motorLeftOne.configVoltageMeasurementFilter(32, 10);
+    
+    RobotMap.motorRightOne.configVoltageCompSaturation(RobotMap.voltageControlMax, 10);
+    RobotMap.motorRightOne.enableVoltageCompensation(true);
+    RobotMap.motorRightOne.configVoltageMeasurementFilter(32, 10);
 	
     RobotMap.motorLeftTwo.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 	RobotMap.motorRightTwo.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
@@ -181,6 +194,10 @@ public class motionMagicDriveForward extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    RobotMap.motorLeftTwo.enableVoltageCompensation(false);
+    RobotMap.motorRightTwo.enableVoltageCompensation(false);
+    RobotMap.motorLeftOne.enableVoltageCompensation(false);
+    RobotMap.motorRightOne.enableVoltageCompensation(false);
     RobotMap.motorRightTwo.setInverted(false);
     RobotMap.motorLeftTwo.setInverted(false);
     RobotMap.motorRightOne.setInverted(false);
