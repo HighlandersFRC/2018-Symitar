@@ -19,8 +19,8 @@ public class navxTurn extends Command {
 	private double speed = 0;
 	private double time;
 	private double desiredAngle;
-	private double kp = 0.025;
-	private double ki = 0.00350;
+	private double kp = 0.075;
+	private double ki = 0.000250;
 	private double kd = 0;
 	private PID orientation; 
 	private double startTime;
@@ -60,13 +60,13 @@ public class navxTurn extends Command {
     protected void execute() {
   
  
- //   orientation.updatePID(RobotMap.navx.getAngle());
+    orientation.updatePID(RobotMap.navx.getAngle());
     	RobotMap.motorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, turnPower*(orientation.getResult() - speed));
     	RobotMap.motorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, turnPower*(orientation.getResult() - speed));
     	
     	RobotMap.motorRightOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, turnPower*(orientation.getResult() + speed));
     	RobotMap.motorRightTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, turnPower*(orientation.getResult() + speed));
-    //	System.out.println(RobotMap.navx.getAngle()-desiredAngle);
+    	System.out.println(RobotMap.navx.getAngle()-desiredAngle);
    }
 
 
@@ -75,7 +75,7 @@ public class navxTurn extends Command {
     // Make this return true whcccen this Command no longer needs to run execute()
     protected boolean isFinished() {
     
-    	if(Math.abs(/*RobotMap.navx.getAngle()*/ - this.desiredAngle) <=0.5) {
+    	if(Math.abs(RobotMap.navx.getAngle() - this.desiredAngle) <=0.5) {
    
     		return true;
     	}

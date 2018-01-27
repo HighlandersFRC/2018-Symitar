@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 
 
+
 import edu.wpi.first.wpilibj.TimedRobot;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -23,6 +24,7 @@ import org.usfirst.frc.team4499.robot.OI;
 import org.usfirst.frc.team4499.robot.commands.ExampleCommand;
 import org.usfirst.frc.team4499.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team4499.robot.RobotMap;
+import org.usfirst.frc.team4499.robot.commands.navxTurn;
 import org.usfirst.frc.team4499.robot.commands.motionMagicDriveForward;
 import org.usfirst.frc.team4499.robot.commands.PercentOutPutDriveForward;
 
@@ -60,7 +62,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		//turn = new navxTurn(RobotMap.navx.getAngle()+ 45);
-		drive = new motionMagicDriveForward(100, RobotMap.navx.getAngle(),300, 150);
+		drive = new motionMagicDriveForward(110, RobotMap.navx.getAngle(),300, 150);
 		drive2 = new PercentOutPutDriveForward();
 
 		m_oi = new OI();
@@ -127,10 +129,11 @@ public class Robot extends TimedRobot {
 	
 	@Override
 	public void teleopPeriodic() {
+		
 	
 	SmartDashboard.putBoolean( "IMU_Connected", RobotMap.navx.isConnected());
     System.out.println(RobotMap.navx.getAngle()+ " navx Angle X");
-    System.out.println(RobotMap.motorRightTwo.getMotorOutputPercent());
+    
     RobotMap.motorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0.5* OI.joyStickOne.getRawAxis(1));
 	RobotMap.motorRightOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0.5* -OI.joyStickOne.getRawAxis(5));
 	RobotMap.motorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0.5* OI.joyStickOne.getRawAxis(1));

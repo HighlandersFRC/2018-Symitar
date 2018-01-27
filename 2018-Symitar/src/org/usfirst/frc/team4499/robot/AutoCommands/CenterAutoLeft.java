@@ -1,9 +1,12 @@
 package org.usfirst.frc.team4499.robot.AutoCommands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 
 import org.usfirst.frc.team4499.robot.commands.motionMagicDriveForward;
 import org.usfirst.frc.team4499.robot.commands.navxTurn;
+import org.usfirst.frc.team4499.robot.commands.Wait;
+
 import org.usfirst.frc.team4499.robot.RobotMap;
 
 
@@ -15,13 +18,22 @@ public class CenterAutoLeft extends CommandGroup {
 	private double StartingAngle;
 
     public CenterAutoLeft() {
-        StartingAngle = RobotMap.navx.getAngle();
-    	addSequential(new motionMagicDriveForward(20.0f, StartingAngle,100,80));
-    	addSequential(new navxTurn(StartingAngle + 30,0.9f));
-    	addSequential(new motionMagicDriveForward(108.0f, StartingAngle + 30,300, 150));
-    	addSequential(new navxTurn(StartingAngle,0.5f));
-    	addSequential(new motionMagicDriveForward(40.0f, StartingAngle ,200, 200));
+    	addSequential(new navxTurn( RobotMap.navx.getAngle() +30,0.8f));
+    	/*addSequential(new WaitCommand(0.5));
+    	addSequential(new navxTurn(RobotMap.navx.getAngle() + -30,0.8f));
+    	addSequential(new WaitCommand(0.5));
+    	addSequential(new navxTurn(RobotMap.navx.getAngle(),0.8f));
+    	addSequential(new WaitCommand(0.5)); 	
+    	addSequential(new navxTurn(RobotMap.navx.getAngle() + 45,0.8f));
+    	addSequential(new WaitCommand(0.5));
+    	addSequential(new navxTurn(RobotMap.navx.getAngle(),0.8f));  	
+    	addSequential(new WaitCommand(0.5));
+    	addSequential(new navxTurn(RobotMap.navx.getAngle() + -45,0.8f));
+    	addSequential(new WaitCommand(0.5));*/
+    	//addSequential(new navxTurn(RobotMap.navx.getAngle(),0.8f));  
 
+    	//addSequential(new navxTurn(StartingAngle,0.5f));
+    	
 
         // Add Commands here:
         // e.g. addSequential(new Command1());

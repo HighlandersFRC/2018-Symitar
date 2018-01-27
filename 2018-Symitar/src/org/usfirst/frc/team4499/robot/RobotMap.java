@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.hal.MatchInfoData;
@@ -26,6 +27,9 @@ public class RobotMap {
 	public static float maxLeftRPM = 465.47f;
 	public static float maxRightRPM = 455.63f;
 	public static double voltageControlMax = 11.0;
+	
+
+
 	//public static DoubleSolenoid Solenoid1 = new DoubleSolenoid(0,1);
 	public static TalonSRX motorRightOne = new TalonSRX(rightOneTalonID);
 	public static TalonSRX motorRightTwo = new TalonSRX(rightTwoTalonID);
