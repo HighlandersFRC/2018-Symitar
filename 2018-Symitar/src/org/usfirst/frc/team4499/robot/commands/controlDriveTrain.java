@@ -15,22 +15,20 @@ import org.usfirst.frc.team4499.robot.OI;
 import org.usfirst.frc.team4499.robot.commands.ExampleCommand;
 import org.usfirst.frc.team4499.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team4499.robot.RobotMap;
-import org.usfirst.frc.team4499.robot.commands.navxTurn;
-import org.usfirst.frc.team4499.robot.commands.motionMagicDriveForward;
+import org.usfirst.frc.team4499.robot.AutoCommands.navxTurn;
+import org.usfirst.frc.team4499.robot.AutoCommands.motionMagicDriveForward;
 import org.usfirst.frc.team4499.robot.commands.PercentOutPutDriveForward;
-import org.usfirst.frc.team4499.robot.commands.controlDriveTrain;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 
 
-import org.usfirst.frc.team4499.robot.commands.navxTurn;
 import org.usfirst.frc.team4499.robot.AutoCommands.CenterAutoLeft;
 /**
  *
  */
 public class controlDriveTrain extends Command {
 
-	private static final int CURRENT_LIMIT = 38;
+	private static int CURRENT_LIMIT;
 	private static final int MAX_CURRENT_OFF_COUNT = 3;
 	private TalonSRX motorRightOne;
 	private TalonSRX motorRightTwo;
@@ -38,13 +36,13 @@ public class controlDriveTrain extends Command {
 	private TalonSRX motorLeftTwo;
 	private int currentOffCount;
 	private int passnum = 0;
-	private double minCurrentPercentage = 1;
+	private double minCurrentScaler= 1;
 	
-    public controlDriveTrain(TalonSRX l1, TalonSRX l2, TalonSRX r1, TalonSRX r2) {
+    public controlDriveTrain(TalonSRX l1, TalonSRX l2, TalonSRX r1, TalonSRX r2, int maxCurrent) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	
-    	
+    	CURRENT_LIMIT = maxCurrent;
     	
         motorRightOne = r1;
     	motorRightTwo = r2;
@@ -66,12 +64,9 @@ public class controlDriveTrain extends Command {
     if(OI.disableStallProtection.get()) {   	
     	setMotorsNoCurrentProtection();	
     }
-    else if(OI.enableStallProtection.get()) {
+    else{
     	setMotorsCurrentProtection();
     		
-    }
-    else {
-    //	System.out.println("No Driving");
     }
     		
     }
@@ -80,24 +75,24 @@ public class controlDriveTrain extends Command {
     
     	
     	//System.out.println("enabled Brownout protection");
-    	if (calcCurrentPercent(motorLeftOne) < minCurrentPercentage) {
-    		minCurrentPercentage = calcCurrentPercent(motorLeftOne);
+    	if (calcCurrentPercent(motorLeftOne) < minCurrentScaler) {
+    		minCurrentScaler = calcCurrentPercent(motorLeftOne);
     	}
-    	if (calcCurrentPercent(motorLeftTwo) < minCurrentPercentage) {
-    		minCurrentPercentage = calcCurrentPercent(motorLeftTwo);
+    	if (calcCurrentPercent(motorLeftTwo) < minCurrentScaler) {
+    		minCurrentScaler = calcCurrentPercent(motorLeftTwo);
     	}
-    	if (calcCurrentPercent(motorRightOne) < minCurrentPercentage) {
-    		minCurrentPercentage = calcCurrentPercent(motorRightOne);
+    	if (calcCurrentPercent(motorRightOne) < minCurrentScaler) {
+    		minCurrentScaler = calcCurrentPercent(motorRightOne);
     	}
-    	if (calcCurrentPercent(motorRightTwo) < minCurrentPercentage) {
-    		minCurrentPercentage = calcCurrentPercent(motorRightTwo);
+    	if (calcCurrentPercent(motorRightTwo) < minCurrentScaler) {
+    		minCurrentScaler = calcCurrentPercent(motorRightTwo);
     	}
-    	System.out.println("Current protection scaled to " + minCurrentPercentage);
+    	System.out.println("Current protection scaled to " + minCurrentScaler);
     	
-    	limitMotorPower(motorLeftOne, OI.joyStickOne.getRawAxis(1) * Math.abs(OI.joyStickOne.getRawAxis(1)), minCurrentPercentage);
-    	limitMotorPower(motorLeftTwo, OI.joyStickOne.getRawAxis(1) * Math.abs(OI.joyStickOne.getRawAxis(1)), minCurrentPercentage);
-    	limitMotorPower(motorRightOne, -OI.joyStickOne.getRawAxis(5) * Math.abs(OI.joyStickOne.getRawAxis(5)), minCurrentPercentage);
-    	limitMotorPower(motorRightTwo, -OI.joyStickOne.getRawAxis(5) * Math.abs(OI.joyStickOne.getRawAxis(5)), minCurrentPercentage);
+    	limitMotorPower(motorLeftOne, 0.5*OI.joyStickOne.getRawAxis(1) * Math.abs(OI.joyStickOne.getRawAxis(1)), minCurrentScaler);
+    	limitMotorPower(motorLeftTwo, 0.5*OI.joyStickOne.getRawAxis(1) * Math.abs(OI.joyStickOne.getRawAxis(1)), minCurrentScaler);
+    	limitMotorPower(motorRightOne,0.5* OI.joyStickOne.getRawAxis(5) * Math.abs(OI.joyStickOne.getRawAxis(5)), minCurrentScaler);
+    	limitMotorPower(motorRightTwo, 0.5*OI.joyStickOne.getRawAxis(5) * Math.abs(OI.joyStickOne.getRawAxis(5)), minCurrentScaler);
     }
 
 	private void setMotorsNoCurrentProtection() {
@@ -113,8 +108,8 @@ public class controlDriveTrain extends Command {
     	}
     		
     	if (Math.abs(OI.joyStickOne.getRawAxis(5)) > 0.2) {
-    		motorRightOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,-OI.joyStickOne.getRawAxis(5));
-    		motorRightTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,-OI.joyStickOne.getRawAxis(5));
+    		motorRightOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,OI.joyStickOne.getRawAxis(5));
+    		motorRightTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,OI.joyStickOne.getRawAxis(5));
     		
     	} else {
     		motorRightOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0);
@@ -128,7 +123,9 @@ public class controlDriveTrain extends Command {
 		}
 		driveMotor.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,setPower * currentScale);
 	}
-
+    public void setMaxCurrent(int currentmax) {
+    	CURRENT_LIMIT = currentmax;
+    }
 	private double calcCurrentPercent(TalonSRX driveMotor) {
 		if (driveMotor.getOutputCurrent() > CURRENT_LIMIT) {
 			return CURRENT_LIMIT / driveMotor.getOutputCurrent();

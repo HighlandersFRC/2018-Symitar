@@ -19,19 +19,19 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.hal.PDPJNI;
 import org.usfirst.frc.team4499.robot.RobotMap;
 import org.usfirst.frc.team4499.robot.OI;
 import org.usfirst.frc.team4499.robot.commands.ExampleCommand;
 import org.usfirst.frc.team4499.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team4499.robot.RobotMap;
-import org.usfirst.frc.team4499.robot.commands.navxTurn;
-import org.usfirst.frc.team4499.robot.commands.motionMagicDriveForward;
+import org.usfirst.frc.team4499.robot.AutoCommands.navxTurn;
+import org.usfirst.frc.team4499.robot.AutoCommands.motionMagicDriveForward;
 import org.usfirst.frc.team4499.robot.commands.PercentOutPutDriveForward;
 import org.usfirst.frc.team4499.robot.commands.controlDriveTrain;
 
 
 
-import org.usfirst.frc.team4499.robot.commands.navxTurn;
 import org.usfirst.frc.team4499.robot.AutoCommands.CenterAutoLeft;
 
 
@@ -64,9 +64,10 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void robotInit() {
-		control = new controlDriveTrain(RobotMap.motorLeftOne, RobotMap.motorLeftTwo, RobotMap.motorRightOne, RobotMap.motorRightTwo);
+    	 control = new controlDriveTrain(RobotMap.motorLeftOne, RobotMap.motorLeftTwo, RobotMap.motorRightOne, RobotMap.motorRightTwo,38);
+
 		//turn = new navxTurn(RobotMap.navx.getAngle()+ 45);
-		drive = new motionMagicDriveForward(20.35, RobotMap.navx.getAngle(),300, 150);
+		drive = new motionMagicDriveForward(110, RobotMap.navx.getAngle(),300, 150);
 		drive2 = new PercentOutPutDriveForward();
 
 		m_oi = new OI();
@@ -120,7 +121,14 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
-	 	
+		RobotMap.motorLeftOne.setInverted(true);
+		RobotMap.motorLeftTwo.setInverted(true);
+		control.start();
+		RobotMap.motorLeftOne.configOpenloopRamp(0.3,0);
+		RobotMap.motorRightOne.configOpenloopRamp(0.3,0);
+		RobotMap.motorLeftTwo.configOpenloopRamp(0.3,0);
+		RobotMap.motorRightTwo.configOpenloopRamp(0.3,0);
+
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
@@ -133,11 +141,11 @@ public class Robot extends TimedRobot {
 	
 	@Override
 	public void teleopPeriodic() {
-		
-	System.out.println(RobotMap.motorLeftTwo.getOutputCurrent());
+    System.out.println(RobotMap.pdp.getVoltage() + "pdpvoltage");
+	System.out.println(RobotMap.motorLeftTwo.getOutputCurrent() );
 	SmartDashboard.putBoolean( "IMU_Connected", RobotMap.navx.isConnected());
-   // System.out.println(RobotMap.navx.getAngle()+ " navx Angle X");
-    control.start();
+    System.out.println(RobotMap.navx.getAngle()+ " navx Angle X");
+   
 	
     
 		

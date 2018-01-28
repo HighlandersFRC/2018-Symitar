@@ -1,11 +1,12 @@
 package org.usfirst.frc.team4499.robot.AutoCommands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+
 import edu.wpi.first.wpilibj.command.WaitCommand;
 
-import org.usfirst.frc.team4499.robot.commands.motionMagicDriveForward;
-import org.usfirst.frc.team4499.robot.commands.navxTurn;
-import org.usfirst.frc.team4499.robot.commands.Wait;
+import org.usfirst.frc.team4499.robot.AutoCommands.motionMagicDriveForward;
+import org.usfirst.frc.team4499.robot.AutoCommands.navxTurn;
+import org.usfirst.frc.team4499.robot.AutoCommands.Wait;
 
 import org.usfirst.frc.team4499.robot.RobotMap;
 

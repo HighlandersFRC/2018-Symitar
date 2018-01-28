@@ -2,18 +2,21 @@
 package org.usfirst.frc.team4499.robot;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Compressor;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.hal.MatchInfoData;
 import edu.wpi.first.wpilibj.hal.FRCNetComm.tInstances;
-
+import edu.wpi.first.wpilibj.hal.PDPJNI;
 
 
 
 public class RobotMap {
+	public static PowerDistributionPanel pdp = new PowerDistributionPanel();
 	public static int rightTwoTalonID = 4; // Right Two is Green ID 4
 	public static int leftTwoTalonID = 3; //Left Two is Yellow, ID 3
 	public static int rightOneTalonID = 1; //Right One is Blue, ID 1
@@ -27,7 +30,7 @@ public class RobotMap {
 	public static float maxLeftRPM = 465.47f;
 	public static float maxRightRPM = 455.63f;
 	public static double voltageControlMax = 11.0;
-	
+//	public static Compressor compressor1 = new Compressor();
 
 
 	//public static DoubleSolenoid Solenoid1 = new DoubleSolenoid(0,1);
