@@ -29,7 +29,7 @@ public class controlGeneral extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        driveControl = new controlDriveTrain(RobotMap.motorLeftOne, RobotMap.motorLeftTwo, RobotMap.motorRightOne, RobotMap.motorRightTwo,38);
+        driveControl =  new controlDriveTrain(RobotMap.motorLeftOne, RobotMap.motorLeftTwo,RobotMap.motorLeftThree, RobotMap.motorRightOne, RobotMap.motorRightTwo,RobotMap.motorRightThree,23);
     	grabberControl = new controlGrabber();
         armControl = new controlArm();
     	maxVoltage = RobotMap.pdp.getVoltage();
@@ -38,21 +38,25 @@ public class controlGeneral extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     if(RobotMap.pdp.getVoltage()< 9.0) {
-    //	RobotMap.compressor1.setClosedLoopControl(false);
+    	RobotMap.compressor1.setClosedLoopControl(false);
     	
     }
     else if(RobotMap.pdp.getVoltage()< 8.0) {
     	//if possible lessen the amount of power availabe to the rs775s controlling the arm
     	//otherwise, potentially stop all controlof the arm
+    	//lessen power draw of grabber
     }
     else if(RobotMap.pdp.getVoltage()< 7.0) {
     	driveControl.setMaxCurrent(15);
+    	//along with this end control of the grabber
     	
     }
     else {
+    	RobotMap.compressor1.setClosedLoopControl(true);
     	driveControl.start();
     	armControl.start();
     	grabberControl.start();
+    	driveControl.setMaxCurrent(23);
     	
     }
     }

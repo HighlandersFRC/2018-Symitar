@@ -64,10 +64,10 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void robotInit() {
-    	 control = new controlDriveTrain(RobotMap.motorLeftOne, RobotMap.motorLeftTwo, RobotMap.motorRightOne, RobotMap.motorRightTwo,38);
+    	 control = new controlDriveTrain(RobotMap.motorLeftOne, RobotMap.motorLeftTwo,RobotMap.motorLeftThree, RobotMap.motorRightOne, RobotMap.motorRightTwo,RobotMap.motorRightThree,23);
 
 		//turn = new navxTurn(RobotMap.navx.getAngle()+ 45);
-		drive = new motionMagicDriveForward(110, RobotMap.navx.getAngle(),300, 150);
+		drive = new motionMagicDriveForward(104, RobotMap.navx.getAngle(),1415, 1300);
 		drive2 = new PercentOutPutDriveForward();
 
 		m_oi = new OI();
@@ -121,13 +121,13 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
-		RobotMap.motorLeftOne.setInverted(true);
-		RobotMap.motorLeftTwo.setInverted(true);
+		RobotMap.motorLeftThree.setSelectedSensorPosition(0,0,0);
+		RobotMap.motorRightTwo.setSelectedSensorPosition(0,0,0);
 		control.start();
-		RobotMap.motorLeftOne.configOpenloopRamp(0.3,0);
+	/*	RobotMap.motorLeftOne.configOpenloopRamp(0.3,0);
 		RobotMap.motorRightOne.configOpenloopRamp(0.3,0);
 		RobotMap.motorLeftTwo.configOpenloopRamp(0.3,0);
-		RobotMap.motorRightTwo.configOpenloopRamp(0.3,0);
+		RobotMap.motorRightTwo.configOpenloopRamp(0.3,0);*/
 
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
@@ -145,7 +145,8 @@ public class Robot extends TimedRobot {
 	System.out.println(RobotMap.motorLeftTwo.getOutputCurrent() );
 	SmartDashboard.putBoolean( "IMU_Connected", RobotMap.navx.isConnected());
     System.out.println(RobotMap.navx.getAngle()+ " navx Angle X");
-   
+    System.out.println(RobotMap.motorLeftThree.getSelectedSensorPosition(0));
+    System.out.println(RobotMap.motorRightTwo.getSelectedSensorPosition(0));
 	
     
 		
