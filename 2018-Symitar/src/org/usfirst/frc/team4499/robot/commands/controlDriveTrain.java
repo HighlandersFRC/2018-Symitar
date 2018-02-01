@@ -190,6 +190,12 @@ public class controlDriveTrain extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	this.motorRightOne.configOpenloopRamp(0, 0);
+        this.motorRightTwo.configOpenloopRamp(0, 0);
+        this.motorRightThree.configOpenloopRamp(0, 0);
+        this.motorLeftOne.configOpenloopRamp(0, 0);
+        this.motorLeftTwo.configOpenloopRamp(0, 0);
+        this.motorLeftThree.configOpenloopRamp(0, 0);
     	motorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0);
     	motorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0);
     	motorRightOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0);

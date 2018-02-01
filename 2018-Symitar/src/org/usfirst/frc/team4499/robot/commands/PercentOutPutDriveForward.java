@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class PercentOutPutDriveForward extends Command {
 	
 	private double startTime;
+	private double drivePercent = 0.35;
     public PercentOutPutDriveForward() {
     	
     	
@@ -61,12 +62,12 @@ public class PercentOutPutDriveForward extends Command {
     //then, do ([PercentOutput] *1023)/Native units per 100ms;
     //find this on https://github.com/CrossTheRoadElec/Phoenix-Documentation/blob/master/README.md
     protected void execute() {
-    	RobotMap.motorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,-0.35);
-    	RobotMap.motorRightOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0.35);
-    	RobotMap.motorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,-0.35);
-    	RobotMap.motorRightTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0.35);
-    	RobotMap.motorRightThree.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0.35);
-    	RobotMap.motorLeftThree.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,-0.35);
+    	RobotMap.motorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,-drivePercent);
+    	RobotMap.motorRightOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,drivePercent);
+    	RobotMap.motorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,-drivePercent);
+    	RobotMap.motorRightTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,drivePercent);
+    	RobotMap.motorRightThree.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,drivePercent);
+    	RobotMap.motorLeftThree.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,-drivePercent);
 
 
     }

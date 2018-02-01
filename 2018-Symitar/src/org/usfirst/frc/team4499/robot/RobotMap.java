@@ -2,6 +2,7 @@
 package org.usfirst.frc.team4499.robot;
 import org.opencv.video.KalmanFilter;
 
+
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 
@@ -53,7 +54,6 @@ public class RobotMap {
 	
 	public static DoubleSolenoid.Value lowGear = DoubleSolenoid.Value.kForward;
 	public static DoubleSolenoid.Value highGear = DoubleSolenoid.Value.kReverse;
-
 //	public static TalonSRX componentmotorLeftThree = new TalonSRX(9);
 
 	//Accretion RobotMap, comment out for practice bot

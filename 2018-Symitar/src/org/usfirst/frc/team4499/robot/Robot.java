@@ -59,15 +59,18 @@ public class Robot extends TimedRobot {
 	private PercentOutPutDriveForward drive2;
 	private navxTurn turn;
 	private controlDriveTrain control;
+  //  public static UsbCamera Camera_front;
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
 
 	@Override
 	public void robotInit() {
-    	 control = new controlDriveTrain(RobotMap.motorLeftOne, RobotMap.motorLeftTwo,RobotMap.motorLeftThree, RobotMap.motorRightOne, RobotMap.motorRightTwo,RobotMap.motorRightThree,23);
+		//Camera_front = new UsbCamera("testcam1", 0);
+
+     control = new controlDriveTrain(RobotMap.motorLeftOne, RobotMap.motorLeftTwo,RobotMap.motorLeftThree, RobotMap.motorRightOne, RobotMap.motorRightTwo,RobotMap.motorRightThree,23);
 
 		//turn = new navxTurn(RobotMap.navx.getAngle()+ 45);
-		drive = new motionMagicDriveForward(104, RobotMap.navx.getAngle(),1415, 1300);
+		drive = new motionMagicDriveForward(104, RobotMap.navx.getAngle(),1415, 700);
 		drive2 = new PercentOutPutDriveForward();
 
 		m_oi = new OI();
