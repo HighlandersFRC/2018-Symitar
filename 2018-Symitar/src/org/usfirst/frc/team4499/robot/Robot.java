@@ -33,8 +33,8 @@ import org.usfirst.frc.team4499.robot.commands.controlDriveTrain;
 
 
 import org.usfirst.frc.team4499.robot.AutoCommands.CenterAutoLeft;
-
-
+import com.ctre.phoenix.ILoopable;
+import org.usfirst.frc.team4499.robot.Schedulers;
 
 
 // Give me something cause why not
@@ -121,6 +121,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
+
 		RobotMap.motorLeftOne.setInverted(true);
 		RobotMap.motorLeftTwo.setInverted(true);
 		control.start();
@@ -129,6 +130,14 @@ public class Robot extends TimedRobot {
 		RobotMap.motorLeftTwo.configOpenloopRamp(0.3,0);
 		RobotMap.motorRightTwo.configOpenloopRamp(0.3,0);
 
+	 	//************************
+		//FOR LED LIGHTS
+		for (ILoopable loop:org.usfirst.frc.team4499.robot.Tasks.FullList)
+		{
+				org.usfirst.frc.team4499.robot.Schedulers.PeriodicTasks.add(loop);
+		}
+		//************************
+			
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
@@ -141,14 +150,18 @@ public class Robot extends TimedRobot {
 	
 	@Override
 	public void teleopPeriodic() {
+
     System.out.println(RobotMap.pdp.getVoltage() + "pdpvoltage");
 	System.out.println(RobotMap.motorLeftTwo.getOutputCurrent() );
 	SmartDashboard.putBoolean( "IMU_Connected", RobotMap.navx.isConnected());
     System.out.println(RobotMap.navx.getAngle()+ " navx Angle X");
-   
-	
-    
+
+		//************************
+				//FOR LED LIGHTS
+		org.usfirst.frc.team4499.robot.Schedulers.PeriodicTasks.process();
 		
+		//************************
+	
 			
 		
 		Scheduler.getInstance().run();
