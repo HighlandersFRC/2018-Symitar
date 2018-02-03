@@ -20,20 +20,6 @@ public class CenterAutoLeft extends CommandGroup {
 
     public CenterAutoLeft() {
     	addSequential(new navxTurn( RobotMap.navx.getAngle() +30,0.8f));
-    	/*addSequential(new WaitCommand(0.5));
-    	addSequential(new navxTurn(RobotMap.navx.getAngle() + -30,0.8f));
-    	addSequential(new WaitCommand(0.5));
-    	addSequential(new navxTurn(RobotMap.navx.getAngle(),0.8f));
-    	addSequential(new WaitCommand(0.5)); 	
-    	addSequential(new navxTurn(RobotMap.navx.getAngle() + 45,0.8f));
-    	addSequential(new WaitCommand(0.5));
-    	addSequential(new navxTurn(RobotMap.navx.getAngle(),0.8f));  	
-    	addSequential(new WaitCommand(0.5));
-    	addSequential(new navxTurn(RobotMap.navx.getAngle() + -45,0.8f));
-    	addSequential(new WaitCommand(0.5));*/
-    	//addSequential(new navxTurn(RobotMap.navx.getAngle(),0.8f));  
-
-    	//addSequential(new navxTurn(StartingAngle,0.5f));
     	
 
         // Add Commands here:

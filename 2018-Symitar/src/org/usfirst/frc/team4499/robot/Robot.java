@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 
 
+
 import edu.wpi.first.wpilibj.TimedRobot;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -107,10 +108,7 @@ public class Robot extends TimedRobot {
 		// schedule the autonomous command (example)
 		if (m_autonomousCommand != null) {
             drive.start();
-            RobotMap.motorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
-        	RobotMap.motorRightTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
-        	RobotMap.motorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
-        	RobotMap.motorRightTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
+            
             
 			m_autonomousCommand.start();
 		}
@@ -126,7 +124,15 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 		RobotMap.motorLeftThree.setSelectedSensorPosition(0,0,0);
 		RobotMap.motorRightTwo.setSelectedSensorPosition(0,0,0);
-		control.start();
+		//control.start();
+		RobotMap.motorRightOne.setInverted(true);
+		RobotMap.motorRightTwo.setInverted(true);
+		RobotMap.motorRightThree.setInverted(true);
+		RobotMap.motorLeftOne.setInverted(true);
+    	
+    	
+		RobotMap.motorLeftTwo.setInverted(false);
+    	RobotMap.motorLeftThree.setInverted(false);
 	/*	RobotMap.motorLeftOne.configOpenloopRamp(0.3,0);
 		RobotMap.motorRightOne.configOpenloopRamp(0.3,0);
 		RobotMap.motorLeftTwo.configOpenloopRamp(0.3,0);
@@ -144,14 +150,40 @@ public class Robot extends TimedRobot {
 	
 	@Override
 	public void teleopPeriodic() {
-    System.out.println(RobotMap.pdp.getVoltage() + "pdpvoltage");
-	System.out.println(RobotMap.motorLeftTwo.getOutputCurrent() );
-	SmartDashboard.putBoolean( "IMU_Connected", RobotMap.navx.isConnected());
-    System.out.println(RobotMap.navx.getAngle()+ " navx Angle X");
-    System.out.println(RobotMap.motorLeftThree.getSelectedSensorPosition(0));
-    System.out.println(RobotMap.motorRightTwo.getSelectedSensorPosition(0));
+		
+		if(OI.shiftUp.get()) {
+        	RobotMap.shifters.set(RobotMap.highGear);      	
+        	}
+        if(OI.shiftDown.get()) {
+            RobotMap.shifters.set(RobotMap.lowGear);
+        	}
+        else {
+        	
+        }
+    if (Math.abs(OI.joyStickOne.getRawAxis(1)) > 0.2) {
+  		RobotMap.motorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,OI.joyStickOne.getRawAxis(1));
+  		RobotMap.motorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,OI.joyStickOne.getRawAxis(1));
+  		RobotMap.motorLeftThree.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,OI.joyStickOne.getRawAxis(1));
+
+  		
+  	}
+      else {
+    	  RobotMap.motorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0);
+    	  RobotMap.motorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0);
+    	  RobotMap.motorLeftThree.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0);
+      }
 	
-    
+    if (Math.abs(OI.joyStickOne.getRawAxis(5)) > 0.2) {
+    	RobotMap.motorRightOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,OI.joyStickOne.getRawAxis(5));
+    	RobotMap.motorRightTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,OI.joyStickOne.getRawAxis(5));
+    	RobotMap.motorRightThree.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,OI.joyStickOne.getRawAxis(5));	
+	}
+    else {
+    	RobotMap.motorRightOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0);
+    	RobotMap.motorRightTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0);
+    	RobotMap.motorRightThree.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0);
+    }
+    System.out.println(OI.joyStickOne.getRawAxis(1));
 		
 			
 		

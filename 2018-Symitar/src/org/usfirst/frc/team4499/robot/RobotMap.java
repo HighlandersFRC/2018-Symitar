@@ -49,9 +49,10 @@ public class RobotMap {
 	public static TalonSRX motorLeftThree = new TalonSRX(leftThreeTalonID);
 	
 	
-	public static TalonSRX componentmotorLeftOne = new TalonSRX(7);
-	public static TalonSRX componentmotorLeftTwo = new TalonSRX(8);
+	public static TalonSRX armMaster = new TalonSRX(5);
+	public static TalonSRX armFollower = new TalonSRX(4);
 	
+	public static DoubleSolenoid.Value sameGear = DoubleSolenoid.Value.kForward;
 	public static DoubleSolenoid.Value lowGear = DoubleSolenoid.Value.kForward;
 	public static DoubleSolenoid.Value highGear = DoubleSolenoid.Value.kReverse;
 //	public static TalonSRX componentmotorLeftThree = new TalonSRX(9);

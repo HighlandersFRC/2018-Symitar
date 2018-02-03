@@ -54,15 +54,15 @@ public class navxTurn extends Command {
 		RobotMap.motorRightTwo.setSelectedSensorPosition(0,0,0);
 
     	
-    orientation.setSetPoint(desiredAngle);
-    	startTime = Timer.getFPGATimestamp();
+       orientation.setSetPoint(desiredAngle);
+       startTime = Timer.getFPGATimestamp();
     }
 
     // Csalled repeatedly when this Command is scheduled to run
     protected void execute() {
   
  
-    orientation.updatePID(RobotMap.navx.getAngle());
+    	orientation.updatePID(RobotMap.navx.getAngle());
     	RobotMap.motorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, turnPower*(orientation.getResult() - speed));
     	RobotMap.motorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, turnPower*(orientation.getResult() - speed));
     	RobotMap.motorLeftThree.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, turnPower*(orientation.getResult() - speed));

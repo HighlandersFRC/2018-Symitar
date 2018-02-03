@@ -17,7 +17,6 @@ public class OI {
 	public static JoystickButton pistonIn = new JoystickButton(joyStickOne,1);
 	public static JoystickButton pistonOut = new JoystickButton(joyStickOne,4);
 	
-	// Joystick stick = new Joystick(port);
-	// Button button = new JoystickButton(stick, buttonNumber);
+	
 	
 }

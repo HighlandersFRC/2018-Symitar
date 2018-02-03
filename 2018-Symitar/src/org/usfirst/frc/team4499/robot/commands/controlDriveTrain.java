@@ -30,7 +30,7 @@ import org.usfirst.frc.team4499.robot.AutoCommands.CenterAutoLeft;
 public class controlDriveTrain extends Command {
 
 	private static int CURRENT_LIMIT;
-	private static final int MAX_CURRENT_OFF_COUNT = 3;
+	private static final int MAX_CURRENT_OFF_COUNT = 6000;
 	private TalonSRX motorRightOne;
 	private TalonSRX motorRightTwo;
 	private TalonSRX motorRightThree;
@@ -72,12 +72,12 @@ public class controlDriveTrain extends Command {
     	RobotMap.motorRightTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
     	RobotMap.motorRightThree.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
     	
-        this.motorRightOne.configOpenloopRamp(0.3, 0);
+      /*  this.motorRightOne.configOpenloopRamp(0.3, 0);
         this.motorRightTwo.configOpenloopRamp(0.3, 0);
         this.motorRightThree.configOpenloopRamp(0.3, 0);
         this.motorLeftOne.configOpenloopRamp(0.3, 0);
         this.motorLeftTwo.configOpenloopRamp(0.3, 0);
-        this.motorLeftThree.configOpenloopRamp(0.3, 0);
+        this.motorLeftThree.configOpenloopRamp(0.3, 0);*/
 
 
 
@@ -118,24 +118,22 @@ public class controlDriveTrain extends Command {
     	if (calcCurrentPercent(motorRightTwo) < minCurrentScaler) {
     		minCurrentScaler = calcCurrentPercent(motorRightTwo);
     	}
+    	if (calcCurrentPercent(motorRightThree) < minCurrentScaler) {
+    		minCurrentScaler = calcCurrentPercent(motorRightTwo);
+    	}
+    	if (calcCurrentPercent(motorLeftThree) < minCurrentScaler) {
+    		minCurrentScaler = calcCurrentPercent(motorRightTwo);
+    	}
     	System.out.println("Current protection scaled to " + minCurrentScaler);
-    	if(OI.shiftUp.get()) {
-    	RobotMap.shifters.set(RobotMap.highGear);
     	
-    	}
-    	if(OI.shiftDown.get()) {
-        RobotMap.shifters.set(RobotMap.lowGear);
-    	}
-    	else {
-    	RobotMap.shifters.set(DoubleSolenoid.Value.kOff);	
-    	}
-    	limitMotorPower(motorLeftOne,0.35* OI.joyStickOne.getRawAxis(1) , minCurrentScaler);
-    	limitMotorPower(motorLeftTwo, 0.35*OI.joyStickOne.getRawAxis(1) , minCurrentScaler);
-    	limitMotorPower(motorLeftThree,0.35* OI.joyStickOne.getRawAxis(1) , minCurrentScaler);
+    	limitMotorPower(motorLeftOne, OI.joyStickOne.getRawAxis(1) , minCurrentScaler);
+    	limitMotorPower(motorLeftTwo, OI.joyStickOne.getRawAxis(1) , minCurrentScaler);
+    	limitMotorPower(motorLeftThree, OI.joyStickOne.getRawAxis(1) , minCurrentScaler);
 
-    	limitMotorPower(motorRightOne, 0.35*OI.joyStickOne.getRawAxis(5), minCurrentScaler);
-    	limitMotorPower(motorRightTwo,0.35*OI.joyStickOne.getRawAxis(5), minCurrentScaler);
-    	limitMotorPower(motorRightThree,0.35*OI.joyStickOne.getRawAxis(5), minCurrentScaler);
+    	limitMotorPower(motorRightOne, OI.joyStickOne.getRawAxis(5), minCurrentScaler);
+    	limitMotorPower(motorRightTwo,OI.joyStickOne.getRawAxis(5), minCurrentScaler);
+    	limitMotorPower(motorRightThree,OI.joyStickOne.getRawAxis(5), minCurrentScaler);
+    	
     }
 
 	private void setMotorsNoCurrentProtection() {
@@ -144,24 +142,31 @@ public class controlDriveTrain extends Command {
     		
 			motorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,OI.joyStickOne.getRawAxis(1)); // Up on joystick returns lower
 			motorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,OI.joyStickOne.getRawAxis(1)); // Up on joystick returns lower
+			motorLeftThree.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,OI.joyStickOne.getRawAxis(1)); // Up on joystick returns lower
 
     	} else {
     		motorLeftOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0); 
     		motorLeftTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0);
+			motorLeftThree.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0); // Up on joystick returns lower
+
     	}
     		
     	if (Math.abs(OI.joyStickOne.getRawAxis(5)) > 0.2) {
     		motorRightOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,OI.joyStickOne.getRawAxis(5));
     		motorRightTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,OI.joyStickOne.getRawAxis(5));
+    		motorRightThree.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,OI.joyStickOne.getRawAxis(5));
+
     		
     	} else {
     		motorRightOne.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0);
     		motorRightTwo.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0);
+    		motorRightThree.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0);
+
     	}
 	}
     
 	private void limitMotorPower(TalonSRX driveMotor, double setPower, double currentScale) {
-		if (Math.abs(setPower) < 0.1) {
+		if (Math.abs(setPower) < 0.2) {
 			setPower = 0;
 		}
 		driveMotor.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,setPower * currentScale);

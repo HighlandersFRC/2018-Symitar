@@ -40,6 +40,14 @@ public class PercentOutPutDriveForward extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	startTime = Timer.getFPGATimestamp();
+        RobotMap.motorLeftThree.configVoltageCompSaturation(RobotMap.voltageControlMax, 10);
+        RobotMap.motorLeftThree.enableVoltageCompensation(true); 
+        RobotMap.motorLeftThree.configVoltageMeasurementFilter(32, 10);
+        
+        RobotMap.motorRightThree.configVoltageCompSaturation(RobotMap.voltageControlMax, 10);
+        RobotMap.motorRightThree.enableVoltageCompensation(true); 
+        RobotMap.motorRightThree.configVoltageMeasurementFilter(32, 10);
+         
         RobotMap.motorLeftTwo.configVoltageCompSaturation(RobotMap.voltageControlMax, 10);
         RobotMap.motorLeftTwo.enableVoltageCompensation(true); 
         RobotMap.motorLeftTwo.configVoltageMeasurementFilter(32, 10);
