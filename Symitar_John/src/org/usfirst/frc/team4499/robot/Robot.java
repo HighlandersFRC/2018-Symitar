@@ -7,6 +7,8 @@
 
 package org.usfirst.frc.team4499.robot;
 
+import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -21,6 +23,9 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 
 public class Robot extends TimedRobot {
 	public static OI m_oi;
+	public SerialPort cam2;
+	public SerialPort cam1;
+	public SerialPort cam;
 	//public MoveArm arm = new MoveArm(0);
 	public static final ExampleSubsystem kExampleSubsystem
 	= new ExampleSubsystem();
@@ -32,6 +37,14 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		System.out.println("Test");
+		
+		 CameraServer server = CameraServer.getInstance();
+	     server.startAutomaticCapture();
+	        
+	     cam= new SerialPort(115200, SerialPort.Port.kUSB);
+	     cam1= new SerialPort(115200, SerialPort.Port.kUSB1);
+	     cam2= new SerialPort(115200, SerialPort.Port.kUSB2);
+	        
 		m_oi = new OI();
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
