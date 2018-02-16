@@ -9,6 +9,7 @@ package org.usfirst.frc.team4499.robot;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.I2C;
@@ -54,7 +55,7 @@ public class RobotMap {
 	
 	
 	
-	//public static AHRS navx = new AHRS(I2C.Port.kMXP);
+	public static AHRS navx = new AHRS(I2C.Port.kMXP);
 
 	//Initialize all pneumatic Actuators, predefine actuation directions
 	public static DoubleSolenoid shifters = new DoubleSolenoid(0,1);

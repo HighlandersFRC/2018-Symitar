@@ -57,8 +57,8 @@ public class motionMagicDriveForward extends Command {
     //then, do ([PercentOutput] *1023)/Native units per 100ms;
     //find this on https://github.com/CrossTheRoadElec/Phoenix-Documentation/blob/master/README.md
    
-    fGainLeft = 0.046458f;// + 0.0127f;
-    fGainRight = fGainLeft;
+    fGainLeft = 0.1189;// + 0.0127f;
+    fGainRight = fGainLeft + 0.02;
     pGainLeft = 0;
     pGainRight= 0;
         
@@ -117,7 +117,7 @@ public class motionMagicDriveForward extends Command {
 	angleorientation = new PID(0, 0, 0);
     angleorientation.setContinuous(true);
     //comment this line to diable the navx
- //	angleorientation.setPID(81.0, 1.2, 0);
+ 	angleorientation.setPID(10.0, 0.8, 0);
   	angleorientation.setSetPoint(RobotMap.navx.getAngle());
   	angleorientation.setMaxOutput(1500.0);
 	angleorientation.setMinOutput(1500.0);
@@ -171,7 +171,7 @@ public class motionMagicDriveForward extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    System.out.println(Timer.getFPGATimestamp()-starttime + " time ");
+   /* System.out.println(Timer.getFPGATimestamp()-starttime + " time ");
     System.out.println((int)-RobotMap.motorRightTwo.getSelectedSensorPosition(0)+ " ticksRight " + (RobotMap.motorRightTwo.getSelectedSensorPosition(0)
     		/(RobotMap.gearRatio * RobotMap.encoderTicsPerShaftRotation)) * RobotMap.wheelCircum + " in Right");
 
@@ -180,7 +180,7 @@ public class motionMagicDriveForward extends Command {
     System.out.println(RobotMap.motorLeftThree.getSelectedSensorPosition(0) - this.motionMagicEndPoint + " Left ClosedLoop Error in ticks");
     System.out.println(RobotMap.motorRightTwo.getSelectedSensorPosition(0) - this.motionMagicEndPoint + " Right Closed Loop Error in ticks");
     System.out.println((((this.motionMagicEndPoint - RobotMap.motorLeftThree.getSelectedSensorPosition(0)) / (RobotMap.gearRatio * RobotMap.encoderTicsPerShaftRotation)) * RobotMap.wheelCircum) + " Closed Loop error in inches Left");
-    System.out.println((((this.motionMagicEndPoint - RobotMap.motorRightTwo.getSelectedSensorPosition(0)) / (RobotMap.gearRatio * RobotMap.encoderTicsPerShaftRotation)) * RobotMap.wheelCircum) + " Closed Loop error in inches Right");
+    System.out.println((((this.motionMagicEndPoint - RobotMap.motorRightTwo.getSelectedSensorPosition(0)) / (RobotMap.gearRatio * RobotMap.encoderTicsPerShaftRotation)) * RobotMap.wheelCircum) + " Closed Loop error in inches Right");*/
 
     SmartDashboard.putNumber("AngleResult", this.angleorientation.getResult());
     SmartDashboard.putNumber("AngleError", RobotMap.navx.getAngle()-desiredAngle);

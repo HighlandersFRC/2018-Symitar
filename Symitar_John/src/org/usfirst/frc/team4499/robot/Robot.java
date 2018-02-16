@@ -38,12 +38,12 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		System.out.println("Test");
 		
-		 CameraServer server = CameraServer.getInstance();
+	/*	 CameraServer server = CameraServer.getInstance();
 	     server.startAutomaticCapture();
 	        
 	     cam= new SerialPort(115200, SerialPort.Port.kUSB);
 	     cam1= new SerialPort(115200, SerialPort.Port.kUSB1);
-	     cam2= new SerialPort(115200, SerialPort.Port.kUSB2);
+	     cam2= new SerialPort(115200, SerialPort.Port.kUSB2);*/
 	        
 		m_oi = new OI();
 		// chooser.addObject("My Auto", new MyAutoCommand());
