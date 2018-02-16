@@ -36,6 +36,8 @@ public class RobotMap {
 	
 	public static int intakeLeftID = 9;
 	public static int intakeRightID = 10;
+	public static int armStartingPositionTicks=-681;
+	public static int maxArmPositionTicks=-2013;
 	
 	
 	//Initialize all TalonsSRX
@@ -62,11 +64,11 @@ public class RobotMap {
 	public static DoubleSolenoid.Value lowGear = DoubleSolenoid.Value.kForward;
 	public static DoubleSolenoid.Value highGear = DoubleSolenoid.Value.kReverse;
 	
-	public static DoubleSolenoid brake = new DoubleSolenoid(2,3);
+	public static DoubleSolenoid brake = new DoubleSolenoid(4,5);
 	public static DoubleSolenoid.Value releaseBrake = DoubleSolenoid.Value.kForward;
 	public static DoubleSolenoid.Value setBrake = DoubleSolenoid.Value.kReverse;
 	
-	public static DoubleSolenoid intake = new DoubleSolenoid(4,5);
+	public static DoubleSolenoid intake = new DoubleSolenoid(2,3);
 	public static DoubleSolenoid.Value openIntake = DoubleSolenoid.Value.kForward;
 	public static DoubleSolenoid.Value closeIntake = DoubleSolenoid.Value.kReverse;
 	

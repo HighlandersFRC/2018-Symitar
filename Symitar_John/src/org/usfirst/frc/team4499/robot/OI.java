@@ -22,7 +22,8 @@ public class OI {
 	//Setup Buttons for Copilot, TODO change to controller two 
 	public static JoystickButton armUp = new JoystickButton(joyStickOne,4);
 	public static JoystickButton armDown = new JoystickButton(joyStickOne,1);
-	
+	public static JoystickButton closeIntake = new JoystickButton(joyStickOne, 2);
+	public static JoystickButton openIntake = new JoystickButton(joyStickOne, 3);
 	
 	
 }

@@ -32,28 +32,16 @@ public class navxTurn extends Command {
 	
 
     public navxTurn( double angle, float Power) {
-    	turnPower= Power;
-    	this.time = time;
         desiredAngle= angle;
-    	this.speed = speed;
-    
         orientation = new PID(kp,ki,kd);
     	orientation.setContinuous(true);
-    	orientation.setMaxInput(360);
-    	orientation.setMinInput(0);
-    	orientation.setMaxOutput(0.5);
-    	orientation.setMinOutput(-0.5);
+    	orientation.setMaxOutput(Power);
+    	orientation.setMinOutput(-Power);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	
-    
-    	
-    
-
-    	
-       orientation.setSetPoint(desiredAngle);
+       orientation.setSetPoint(RobotMap.navx.getAngle() + desiredAngle);
        startTime = Timer.getFPGATimestamp();
     }
 
@@ -62,11 +50,10 @@ public class navxTurn extends Command {
   
  
     	orientation.updatePID(RobotMap.navx.getAngle());
-    	RobotMap.leftDriveLead.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, turnPower*(orientation.getResult() - speed));
-    	RobotMap.rightDriveLead.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, turnPower*(orientation.getResult() - speed));
+    	RobotMap.leftDriveLead.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,-orientation.getResult());
+    	RobotMap.rightDriveLead.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, orientation.getResult());
     	
 
-    	System.out.println(RobotMap.navx.getAngle()-desiredAngle);
    }
 
 
@@ -84,6 +71,7 @@ public class navxTurn extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	this.end();
     
     	RobotMap.leftDriveLead.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
     	RobotMap.rightDriveLead.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);

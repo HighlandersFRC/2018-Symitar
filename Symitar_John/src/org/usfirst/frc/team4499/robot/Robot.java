@@ -8,12 +8,19 @@
 package org.usfirst.frc.team4499.robot;
 
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import org.usfirst.frc.team4499.robot.autocommands.navxTurn;
+
+import java.text.FieldPosition;
+
+import org.usfirst.frc.team4499.robot.autocommands.motionMagicDriveForward;
 
 import org.usfirst.frc.team4499.robot.commands.MoveArm;
 import org.usfirst.frc.team4499.robot.commands.TeleopDrive;
@@ -64,7 +71,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		m_autonomousCommand = m_chooser.getSelected();
-
+        config.autoConfig();
+        RobotConfig.fieldPositions = DriverStation.getInstance().getGameSpecificMessage();
 		// schedule the autonomous command (example)
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.start();
@@ -76,11 +84,13 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+		
 		Scheduler.getInstance().run();
 	}
 
 	@Override
 	public void teleopInit() {
+		config.teleopConfig();
 		TeleopDrive drive = new TeleopDrive();
 		Scheduler.getInstance().add(drive);
 		

@@ -19,6 +19,10 @@ public class RobotConfig {
 	public static int driveMotorPeakCurrent = 60;			//Amps
 	public static int driveMotorPeakCurrentDuration = 100;  //Milliseconds
 	public static boolean enableDriveCurrentLimit = true;
+	public static int armMaxEncoderTicks = -2013;
+	public static int armStartEncoderTicks = -611;
+	public static char robotStartPosition = 'R';
+	public static String fieldPositions;
 	
 	public static int timeOut = 10; 						//Milliseconds
 	
@@ -50,6 +54,12 @@ public class RobotConfig {
     		talon.configPeakCurrentDuration(RobotConfig.driveMotorPeakCurrentDuration, RobotConfig.timeOut);
     		talon.enableCurrentLimit(RobotConfig.enableDriveCurrentLimit);
     	}
+    	RobotMap.leftDriveLead.configVoltageCompSaturation(RobotConfig.voltageControlMax, 10);
+    	RobotMap.leftDriveLead.enableVoltageCompensation(false); 
+    	RobotMap.leftDriveLead.configVoltageMeasurementFilter(32, 10);
+    	RobotMap.rightDriveLead.configVoltageCompSaturation(RobotConfig.voltageControlMax, 10);
+    	RobotMap.rightDriveLead.enableVoltageCompensation(false); 
+    	RobotMap.rightDriveLead.configVoltageMeasurementFilter(32, 10);
     	
     	RobotMap.armMaster.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.QuadEncoder, 0, 0);
     	RobotMap.armMaster.getSensorCollection().setQuadraturePosition(0, 0);
@@ -67,9 +77,22 @@ public class RobotConfig {
 		RobotMap.armMaster.configNominalOutputReverse(0, 10);
 		RobotMap.armMaster.configPeakOutputForward(1, 10);
 		RobotMap.armMaster.configPeakOutputReverse(-1, 10);
-
+  
 		
 		RobotMap.armMaster.configSetParameter(ParamEnum.eClearPositionOnLimitF, 1, 0, 0, 10);
+		
+	}
+	public void autoConfig() {
+		RobotMap.leftDriveLead.enableVoltageCompensation(true);
+		RobotMap.rightDriveLead.enableVoltageCompensation(true);
+		RobotMap.rightDriveLead.configOpenloopRamp(0, 0);
+    	RobotMap.leftDriveLead.configOpenloopRamp(0, 0);
+	}
+	public void teleopConfig() {
+		RobotMap.leftDriveLead.enableVoltageCompensation(false);
+		RobotMap.rightDriveLead.enableVoltageCompensation(false);
+		RobotMap.rightDriveLead.configOpenloopRamp(0.3, 0);
+    	RobotMap.leftDriveLead.configOpenloopRamp(0.3, 0);
 		
 	}
 }

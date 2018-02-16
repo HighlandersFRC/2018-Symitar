@@ -76,35 +76,7 @@ public class motionMagicDriveForward extends Command {
     RobotMap.shifters.set(RobotMap.highGear);
 
     starttime = Timer.getFPGATimestamp();
-    /*
-    RobotMap.leftDriveLead.configVoltageCompSaturation(RobotMap.voltageControlMax, 10);
-    RobotMap.leftDriveLead.enableVoltageCompensation(true); 
-    RobotMap.leftDriveLead.configVoltageMeasurementFilter(32, 10);
-    
-    RobotMap.rightDriveLead.configVoltageCompSaturation(RobotMap.voltageControlMax, 10);
-    RobotMap.rightDriveLead.enableVoltageCompensation(true); 
-    RobotMap.rightDriveLead.configVoltageMeasurementFilter(32, 10);
-	*/
-    
-    
-    RobotMap.leftDriveLead.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-	RobotMap.rightDriveLead.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-	
-	/*RobotMap.leftDriveLead.setSelectedSensorPosition(0,0,0);
-	RobotMap.rightDriveLead.setSelectedSensorPosition(0,0,0);
-	*/
-	RobotMap.leftDriveLead.getSensorCollection().setQuadraturePosition(0, RobotConfig.timeOut);
-	RobotMap.rightDriveLead.getSensorCollection().setQuadraturePosition(0, RobotConfig.timeOut);
-	
-  //  RobotMap.motorLeftTwo.setSensorPhase(true);
-  //  RobotMap.rightDriveLead.setSensorPhase(true);
-	
-	RobotMap.rightDriveLead.setInverted(true);
-	RobotMap.rightDriveFollowerOne.setInverted(true);
-	RobotMap.rightDriveFollowerTwo.setInverted(true);
-	
-	//TODO This particular motor runs backwards. If hardware changes this will need to be changed also.
-	RobotMap.leftDriveFollowerTwo.setInverted(true);
+  
 	
 	angleorientation = new PID(0, 0, 0);
     angleorientation.setContinuous(true);
@@ -130,13 +102,13 @@ public class motionMagicDriveForward extends Command {
   //	RobotMap.leftDriveLead.config_kI(0, 0.00000009, 0);	
   //	RobotMap.motorLeftTwo.config_IntegralZone(0, 0, 0);
   //	RobotMap.motorLeftTwo.config_kD(0, 0.14, 0);
-  //	RobotMap.leftDriveLead.config_kF(0, this.fGainLeft, 0);
+  	RobotMap.leftDriveLead.config_kF(0, this.fGainLeft, 0);
   //	RobotMap.motorLeftTwo.configAllowableClosedloopError(0, 300, 0);//300);
   //    RobotMap.rightDriveLead.config_kP(0, 0.00045, 0);
  //     RobotMap.rightDriveLead.config_kI(0, 0.000000009, 0);
   //	RobotMap.rightDriveLead.config_IntegralZone(0, 0, 0);
   //	RobotMap.rightDriveLead.config_kD(0, 0.14, 0);
-  //	RobotMap.rightDriveLead.config_kF(0, this.fGainRight, 0);
+  	RobotMap.rightDriveLead.config_kF(0, this.fGainRight, 0);
   //	RobotMap.rightDriveLead.configAllowableClosedloopError(0, 300, 0);
 	
     RobotMap.leftDriveLead.configMotionCruiseVelocity((int)(this.cruiseVelocityLeft*4096)/600, 0);
@@ -204,6 +176,7 @@ public class motionMagicDriveForward extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    this.end();
 
     }
 }
