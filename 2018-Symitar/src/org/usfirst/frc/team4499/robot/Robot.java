@@ -7,6 +7,8 @@
 
 package org.usfirst.frc.team4499.robot;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 
@@ -35,9 +37,14 @@ import org.usfirst.frc.team4499.robot.commands.controlDriveTrain;
 
 import org.usfirst.frc.team4499.robot.AutoCommands.CenterAutoLeft;
 
-
-
-
+import com.ctre.phoenix.CANifier;
+import com.ctre.phoenix.ILoopable;
+import org.usfirst.frc.team4499.robot.Schedulers;
+import edu.wpi.cscore.MjpegServer;
+import edu.wpi.cscore.VideoMode.PixelFormat;
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
+import edu.wpi.first.wpilibj.DriverStation;
 // Give me something cause why not
 //Too broke
 
@@ -60,15 +67,39 @@ public class Robot extends TimedRobot {
 	private PercentOutPutDriveForward drive2;
 	private navxTurn turn;
 	private controlDriveTrain control;
+<<<<<<< HEAD
   //  public static UsbCamera Camera_front;
+=======
+	public UsbCamera front_visionCam = null;
+	private MjpegServer camMpegServer = null;
+	
+>>>>>>> ff1b55c209f010eb4276ed790511de563ece6f80
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
 
+	
+	// When streaming, use this set of configuration
+
+    private static final int STREAM_WIDTH_PX = 320;
+    private static final int STREAM_HEIGHT_PX = 240;
+
+    private static final int STREAM_RATE_FPS = 30;
+    private static final int MJPG_STREAM_PORT = 1180;
+    
 	@Override
 	public void robotInit() {
+<<<<<<< HEAD
 		//Camera_front = new UsbCamera("testcam1", 0);
 
      control = new controlDriveTrain(RobotMap.motorLeftOne, RobotMap.motorLeftTwo,RobotMap.motorLeftThree, RobotMap.motorRightOne, RobotMap.motorRightTwo,RobotMap.motorRightThree,23);
+=======
+		//org.usfirst.frc.team4499.robot.Hardware.canifier.setLEDOutput(1, CANifier.LEDChannel.LEDChannelA);
+		//org.usfirst.frc.team4499.robot.Hardware.canifier.setLEDOutput(0, CANifier.LEDChannel.LEDChannelB);
+		//org.usfirst.frc.team4499.robot.Hardware.canifier.setLEDOutput(0, CANifier.LEDChannel.LEDChannelC);
+		
+		
+    	 control = new controlDriveTrain(RobotMap.motorLeftOne, RobotMap.motorLeftTwo, RobotMap.motorRightOne, RobotMap.motorRightTwo,38);
+>>>>>>> ff1b55c209f010eb4276ed790511de563ece6f80
 
 		//turn = new navxTurn(RobotMap.navx.getAngle()+ 45);
 		drive = new motionMagicDriveForward(104, RobotMap.navx.getAngle(),1415, 700);
@@ -78,6 +109,22 @@ public class Robot extends TimedRobot {
 		m_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
+		
+		try{
+			//System.out.print("Starting JeVois Cam Stream...");
+				//front_visionCam = new UsbCamera("FrontCam", 0);
+				//front_visionCam.setVideoMode(PixelFormat.kMJPEG, STREAM_WIDTH_PX, STREAM_HEIGHT_PX, STREAM_RATE_FPS);
+			
+				
+				CameraServer server = CameraServer.getInstance();
+			
+				server.startAutomaticCapture();
+				
+			}
+		catch (Exception e) {
+	        DriverStation.reportError("Cannot start camera stream from JeVois", false);
+	        e.printStackTrace();
+	    }
 	}
 
 	
@@ -122,6 +169,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
+<<<<<<< HEAD
 		RobotMap.motorLeftThree.setSelectedSensorPosition(0,0,0);
 		RobotMap.motorRightTwo.setSelectedSensorPosition(0,0,0);
 		//control.start();
@@ -134,10 +182,29 @@ public class Robot extends TimedRobot {
 		RobotMap.motorLeftTwo.setInverted(false);
     	RobotMap.motorLeftThree.setInverted(false);
 	/*	RobotMap.motorLeftOne.configOpenloopRamp(0.3,0);
+=======
+
+		
+		
+		RobotMap.motorLeftOne.setInverted(true);
+		RobotMap.motorLeftTwo.setInverted(true);
+		control.start();
+		
+		RobotMap.motorLeftOne.configOpenloopRamp(0.3,0);
+>>>>>>> ff1b55c209f010eb4276ed790511de563ece6f80
 		RobotMap.motorRightOne.configOpenloopRamp(0.3,0);
 		RobotMap.motorLeftTwo.configOpenloopRamp(0.3,0);
 		RobotMap.motorRightTwo.configOpenloopRamp(0.3,0);*/
 
+	 	//************************
+		//FOR LED LIGHTS
+		//for (ILoopable loop:org.usfirst.frc.team4499.robot.Tasks.FullList)
+		//{
+		//		org.usfirst.frc.team4499.robot.Schedulers.PeriodicTasks.add(loop);
+		//}
+		//************************
+		
+		
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
@@ -150,6 +217,7 @@ public class Robot extends TimedRobot {
 	
 	@Override
 	public void teleopPeriodic() {
+<<<<<<< HEAD
 		
 		if(OI.shiftUp.get()) {
         	RobotMap.shifters.set(RobotMap.highGear);      	
@@ -184,7 +252,33 @@ public class Robot extends TimedRobot {
     	RobotMap.motorRightThree.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,0);
     }
     System.out.println(OI.joyStickOne.getRawAxis(1));
+=======
+
+    System.out.println(RobotMap.pdp.getVoltage() + "pdpvoltage");
+	System.out.println(RobotMap.motorLeftTwo.getOutputCurrent() );
+	SmartDashboard.putBoolean( "IMU_Connected", RobotMap.navx.isConnected());
+    System.out.println(RobotMap.navx.getAngle()+ " navx Angle X");
+
+		//************************
+		//		//FOR LED LIGHTS
+		//org.usfirst.frc.team4499.robot.Schedulers.PeriodicTasks.process();
+		//
+		//************************
+    if (Hardware.gamepad.getRawButton(6))
+	{
+		org.usfirst.frc.team4499.robot.Hardware.canifier.setLEDOutput(.5, CANifier.LEDChannel.LEDChannelA);
+		org.usfirst.frc.team4499.robot.Hardware.canifier.setLEDOutput(0, CANifier.LEDChannel.LEDChannelB);
+		org.usfirst.frc.team4499.robot.Hardware.canifier.setLEDOutput(0, CANifier.LEDChannel.LEDChannelC);	
+	
+	}
+	if (Hardware.gamepad.getRawButton(5))
+	{org.usfirst.frc.team4499.robot.Hardware.canifier.setLEDOutput(0, CANifier.LEDChannel.LEDChannelA);
+	org.usfirst.frc.team4499.robot.Hardware.canifier.setLEDOutput(0, CANifier.LEDChannel.LEDChannelB);
+	org.usfirst.frc.team4499.robot.Hardware.canifier.setLEDOutput(1, CANifier.LEDChannel.LEDChannelC);	
+
+>>>>>>> ff1b55c209f010eb4276ed790511de563ece6f80
 		
+	}
 			
 		
 		Scheduler.getInstance().run();

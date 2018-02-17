@@ -88,7 +88,9 @@ public class RobotMap {
 	public static TalonSRX componentmotorLeftOne = new TalonSRX(7);
 	public static TalonSRX componentmotorLeftTwo = new TalonSRX(8);
 //	public static TalonSRX componentmotorLeftThree = new TalonSRX(9);
-	
+
+
+    public static double voltageCompensationMax = 11.0;
 
 	*/
 
