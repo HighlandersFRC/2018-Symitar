@@ -20,15 +20,16 @@ public class navxTurn extends Command {
 	private double speed = 0;
 	private double time;
 	private double desiredAngle;
-	private double kp = 0.075;
-	private double ki = 0.000250;
+	private double kp = 0.0055;
+	private double ki = 0.000350;
 	private double kd = 0;
 	private PID orientation; 
-	private double startTime;
+	private double startAngle;
 	private int zeroed;
     private float turnPower;
 
 	private boolean across = false;
+	private int run;
 	
 
     public navxTurn( double angle, float Power) {
@@ -41,17 +42,23 @@ public class navxTurn extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-       orientation.setSetPoint(RobotMap.navx.getAngle() + desiredAngle);
-       startTime = Timer.getFPGATimestamp();
+    	startAngle= RobotMap.navx.getAngle();
+    	run =0;
+       orientation.setSetPoint(startAngle + desiredAngle);
+      
     }
 
     // Csalled repeatedly when this Command is scheduled to run
     protected void execute() {
-  
+        if(run%8==0) {
+        	System.out.println(RobotMap.navx.getAngle());
+        	System.out.println(startAngle + desiredAngle);
+        	System.out.println(orientation.getResult());
+        }
  
     	orientation.updatePID(RobotMap.navx.getAngle());
-    	RobotMap.leftDriveLead.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,-orientation.getResult());
-    	RobotMap.rightDriveLead.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, orientation.getResult());
+    	RobotMap.leftDriveLead.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput,+orientation.getResult());
+    	RobotMap.rightDriveLead.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, -orientation.getResult());
     	
 
    }
@@ -62,7 +69,7 @@ public class navxTurn extends Command {
     // Make this return true whcccen this Command no longer needs to run execute()
     protected boolean isFinished() {
     
-    	if(Math.abs(RobotMap.navx.getAngle() - this.desiredAngle) <=0.5) {
+    	if(Math.abs(RobotMap.navx.getAngle() -(startAngle + this.desiredAngle)) <=0.5) {
    
     		return true;
     	}
@@ -71,7 +78,7 @@ public class navxTurn extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	this.end();
+    
     
     	RobotMap.leftDriveLead.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
     	RobotMap.rightDriveLead.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0);
@@ -83,6 +90,7 @@ public class navxTurn extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	this.end();
     }
 }
 

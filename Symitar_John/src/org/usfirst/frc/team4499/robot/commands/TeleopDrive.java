@@ -26,14 +26,14 @@ public class TeleopDrive extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	
-    	if(Math.abs(OI.joyStickTwo.getRawAxis(5)) > 0.15) {
+    	if(Math.abs(OI.joyStickOne.getRawAxis(5)) > 0.15) {
     		RobotMap.rightDriveLead.set(ControlMode.PercentOutput,OI.joyStickOne.getRawAxis(5));
     	}
     	else {
     		RobotMap.rightDriveLead.set(ControlMode.PercentOutput,0);
     	}
     	
-    	if(Math.abs(OI.joyStickTwo.getRawAxis(1))>0.15) {
+    	if(Math.abs(OI.joyStickOne.getRawAxis(1))>0.15) {
     		RobotMap.leftDriveLead.set(ControlMode.PercentOutput, OI.joyStickOne.getRawAxis(1));
     	}
     	else {

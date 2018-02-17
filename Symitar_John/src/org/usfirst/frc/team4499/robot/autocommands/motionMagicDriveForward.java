@@ -43,6 +43,7 @@ public class motionMagicDriveForward extends Command {
 	private double desiredAngle;
 	private double pGainLeft;
 	private double pGainRight;
+	private double endpoint;
 
 	
     public motionMagicDriveForward(double distance, double angle, double cruiseVelocity, int acceleration) {
@@ -53,14 +54,14 @@ public class motionMagicDriveForward extends Command {
     initCruiseVelocityRight = cruiseVelocityRight;
     AccelerationLeft= acceleration;
     AccelerationRight= acceleration;
-    this.motionMagicEndPoint= ((distance/RobotConfig.wheelCircum)*RobotConfig.encoderTicsPerWheelRotation);
-   
+    
+   endpoint = distance;
     //to find the fvalue, use Self test to find the Percent Output
     //then, do ([PercentOutput] *1023)/Native units per 100ms;
     //find this on https://github.com/CrossTheRoadElec/Phoenix-Documentation/blob/master/README.md
    
-    fGainLeft = 0.1189f;// + 0.0127f;
-    fGainRight = fGainLeft + 0.02f;
+    fGainLeft = 0.132404f;// + 0.0127f;
+    fGainRight = fGainLeft -0.0185f;
     pGainLeft = 0;
     pGainRight= 0;
         
@@ -73,7 +74,11 @@ public class motionMagicDriveForward extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
    // Robot.startedCommand= true;
-    RobotMap.shifters.set(RobotMap.highGear);
+    RobotMap.leftDriveLead.setSelectedSensorPosition(0, 0, 0);
+    RobotMap.rightDriveLead.setSelectedSensorPosition(0, 0, 0);
+    this.motionMagicEndPoint= ((-endpoint/RobotConfig.wheelCircum)*RobotConfig.encoderTicsPerWheelRotation);
+    
+    RobotMap.shifters.set(RobotMap.lowGear);
 
     starttime = Timer.getFPGATimestamp();
   
@@ -135,12 +140,12 @@ public class motionMagicDriveForward extends Command {
 
     this.angleorientation.updatePID(RobotMap.navx.getAngle());
     if(this.motionMagicEndPoint > 0){
-        cruiseVelocityLeft = (float) (this.initCruiseVelocityLeft- angleorientation.getResult());
-        cruiseVelocityRight = (float) (this.initCruiseVelocityRight + angleorientation.getResult());
+        cruiseVelocityLeft = (float) (this.initCruiseVelocityLeft+ angleorientation.getResult());
+        cruiseVelocityRight = (float) (this.initCruiseVelocityRight - angleorientation.getResult());
     	        }
     else{
-    	cruiseVelocityLeft = (float) (this.initCruiseVelocityLeft+ angleorientation.getResult());
-    	cruiseVelocityRight = (float) (this.initCruiseVelocityRight - angleorientation.getResult());
+    	cruiseVelocityLeft = (float) (this.initCruiseVelocityLeft- angleorientation.getResult());
+    	cruiseVelocityRight = (float) (this.initCruiseVelocityRight + angleorientation.getResult());
     	       }
     RobotMap.leftDriveLead.configMotionCruiseVelocity((int)(this.cruiseVelocityLeft*4096)/600, 0);
     RobotMap.rightDriveLead.configMotionCruiseVelocity((int)(this.cruiseVelocityRight*4096)/600, 0);
@@ -148,11 +153,11 @@ public class motionMagicDriveForward extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-     if(this.motionMagicEndPoint >0) {
-    	 if(Math.abs(RobotMap.leftDriveLead.getMotorOutputPercent() )==0.0 && Math.abs(RobotMap.rightDriveLead.getMotorOutputPercent() )== 0.00&& Timer.getFPGATimestamp()-starttime > 10) {
+     
+    	 if(Math.abs(RobotMap.leftDriveLead.getMotorOutputPercent() )<=0.075 && Math.abs(RobotMap.rightDriveLead.getMotorOutputPercent()) <= 0.75&& Math.abs(Timer.getFPGATimestamp()-starttime)> 1) {
     		 	return true;
     	 }
-     }
+     
 
         return false;
     

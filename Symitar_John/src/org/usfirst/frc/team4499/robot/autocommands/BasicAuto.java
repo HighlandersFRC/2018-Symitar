@@ -1,6 +1,10 @@
 package org.usfirst.frc.team4499.robot.autocommands;
 
+import org.usfirst.frc.team4499.robot.RobotMap;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import org.usfirst.frc.team4499.robot.autocommands.motionMagicDriveForward;
+import org.usfirst.frc.team4499.robot.commands.OutTakeCrate;
 
 /**
  *
@@ -8,6 +12,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class BasicAuto extends CommandGroup {
 
     public BasicAuto() {
+	addSequential(new motionMagicDriveForward(100, RobotMap.navx.getAngle(), 1100, 1500));
+    addSequential(new OutTakeCrate());
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());

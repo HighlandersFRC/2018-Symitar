@@ -20,10 +20,24 @@ public class OI {
 	public static JoystickButton shiftUp = new JoystickButton(joyStickOne,6);
 	
 	//Setup Buttons for Copilot, TODO change to controller two 
-	public static JoystickButton armUp = new JoystickButton(joyStickOne,4);
-	public static JoystickButton armDown = new JoystickButton(joyStickOne,1);
-	public static JoystickButton closeIntake = new JoystickButton(joyStickOne, 2);
-	public static JoystickButton openIntake = new JoystickButton(joyStickOne, 3);
+	public static JoystickButton armForwardIntake = new JoystickButton(joyStickTwo,4);
+	public static JoystickButton armReverseIntake = new JoystickButton(joyStickTwo,1);
+	public static JoystickButton armForwardShoot = new JoystickButton(joyStickTwo, 2);
+	public static JoystickButton armReverseShoot = new JoystickButton(joyStickTwo, 3);
+	
+	public static JoystickButton closeIntake = new JoystickButton(joyStickTwo, 6);
+	public static JoystickButton openIntake = new JoystickButton(joyStickTwo, 5);
+	//setting up dial inputs
+	public static Joystick dial = new Joystick(2);
+	public static JoystickButton dialOne = new JoystickButton(dial,1);
+	public static JoystickButton dialTwo = new JoystickButton(dial,2);
+	public static JoystickButton dialThree = new JoystickButton(dial,3);
+	public static JoystickButton dialFour = new JoystickButton(dial,4);
+	public static JoystickButton dialFive = new JoystickButton(dial,5);
+	public static JoystickButton switchOne = new JoystickButton(dial, 6);
+	public static JoystickButton switchTwo = new JoystickButton(dial, 7);
+	public static JoystickButton switchThree = new JoystickButton(dial, 8);
+	
 	
 	
 }

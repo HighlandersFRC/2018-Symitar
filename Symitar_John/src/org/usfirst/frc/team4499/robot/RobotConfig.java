@@ -6,7 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 public class RobotConfig {
 	//This is a place to put all sorts of constants that will be used in other places of the robot configuration
-	public static double gearRatio = 7.0;
+	public static double gearRatio = 7.5;
     public static double encoderTicsPerShaftRotation = 4096;
     public static double encoderTicsPerWheelRotation = gearRatio * encoderTicsPerShaftRotation ;
     public static double wheelDiam = 6.0;
@@ -19,12 +19,12 @@ public class RobotConfig {
 	public static int driveMotorPeakCurrent = 60;			//Amps
 	public static int driveMotorPeakCurrentDuration = 100;  //Milliseconds
 	public static boolean enableDriveCurrentLimit = true;
-	public static int armMaxEncoderTicks = -2013;
+	public static int armMaxEncoderTicks = -2014;
 	public static int armStartEncoderTicks = -611;
 	public static char robotStartPosition = 'R';
 	public static String fieldPositions;
 	
-	public static int timeOut = 10; 						//Milliseconds
+	public static int timeOut = 4; 						//Milliseconds
 	
 	//This will run when this object is created, and will handle configuring all sensors 
 	public RobotConfig() {
@@ -67,6 +67,7 @@ public class RobotConfig {
 		RobotMap.armMaster.getSensorCollection().setAnalogPosition(0, 0);
 		RobotMap.armMaster.setSensorPhase(true);
 		
+	//.armMaster.getSensorCollection().setQuadraturePosition(this.armStartEncoderTicks, 0);
 		//Setup follower can Talon
 		RobotMap.armFollower.set(ControlMode.Follower, RobotMap.armMasterID);
 		RobotMap.armMaster.setInverted(false);
@@ -79,7 +80,7 @@ public class RobotConfig {
 		RobotMap.armMaster.configPeakOutputReverse(-1, 10);
   
 		
-		RobotMap.armMaster.configSetParameter(ParamEnum.eClearPositionOnLimitF, 1, 0, 0, 10);
+		RobotMap.intakeRight.set(ControlMode.Follower, RobotMap.intakeLeftID);
 		
 	}
 	public void autoConfig() {

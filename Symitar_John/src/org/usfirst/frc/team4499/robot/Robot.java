@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team4499.robot;
 
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SerialPort;
@@ -20,10 +21,14 @@ import org.usfirst.frc.team4499.robot.autocommands.navxTurn;
 
 import java.text.FieldPosition;
 
+import org.usfirst.frc.team4499.robot.autocommands.AutoPicker;
 import org.usfirst.frc.team4499.robot.autocommands.motionMagicDriveForward;
 
 import org.usfirst.frc.team4499.robot.commands.MoveArm;
+import org.usfirst.frc.team4499.robot.commands.MPArm;
 import org.usfirst.frc.team4499.robot.commands.TeleopDrive;
+import org.usfirst.frc.team4499.robot.commands.TeleopGrabber;
+import org.usfirst.frc.team4499.robot.commands.TeleopArm;
 import org.usfirst.frc.team4499.robot.subsystems.ExampleSubsystem;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -37,22 +42,28 @@ public class Robot extends TimedRobot {
 	public static final ExampleSubsystem kExampleSubsystem
 	= new ExampleSubsystem();
 	public RobotConfig config;
-
+	public motionMagicDriveForward motionMagicDriveForward;
+    public navxTurn turn;
+    public AutoPicker auto;
+   
+    public MPArm mpArm;
+    
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
 
 	@Override
 	public void robotInit() {
+		auto = new AutoPicker();
 		System.out.println("Test");
-		
-	/*	 CameraServer server = CameraServer.getInstance();
-	     server.startAutomaticCapture();
-	        
-	     cam= new SerialPort(115200, SerialPort.Port.kUSB);
-	     cam1= new SerialPort(115200, SerialPort.Port.kUSB1);
-	     cam2= new SerialPort(115200, SerialPort.Port.kUSB2);*/
-	        
-		m_oi = new OI();
+		motionMagicDriveForward = new motionMagicDriveForward(100, RobotMap.navx.getAngle(), 1100, 1500);
+	    turn = new navxTurn(45,  0.75f);
+	
+	
+	    UsbCamera camera1 = CameraServer.getInstance().startAutomaticCapture(0);
+	    UsbCamera camera2 = CameraServer.getInstance().startAutomaticCapture(1);
+	
+	
+	    m_oi = new OI();
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
 		config = new RobotConfig();
@@ -72,9 +83,17 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 		m_autonomousCommand = m_chooser.getSelected();
         config.autoConfig();
-        RobotConfig.fieldPositions = DriverStation.getInstance().getGameSpecificMessage();
-		// schedule the autonomous command (example)
+        auto.start();
+        RobotConfig.fieldPositions = DriverStation.getInstance().getGameSpecificMessage();	
+        if(OI.switchOne.get()) {
+        	RobotConfig.robotStartPosition ='L';
+        }
+        else if(OI.switchThree.get()) {
+        	RobotConfig.robotStartPosition = 'R';
+        }
+        // schedule the autonomous command (example)
 		if (m_autonomousCommand != null) {
+			
 			m_autonomousCommand.start();
 		}
 	}
@@ -84,7 +103,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		
+	
 		Scheduler.getInstance().run();
 	}
 
@@ -92,7 +111,11 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 		config.teleopConfig();
 		TeleopDrive drive = new TeleopDrive();
+		TeleopArm arm = new TeleopArm();
+		TeleopGrabber grabber = new TeleopGrabber();
 		Scheduler.getInstance().add(drive);
+		Scheduler.getInstance().add(grabber);
+		Scheduler.getInstance().add(arm);
 		
 		
 		if (m_autonomousCommand != null) {
@@ -105,31 +128,11 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		
+		
+	
 		//System.out.println("John's Code is Running");
 		Scheduler.getInstance().run();
-		/*
-		if(OI.armUp.get() && !arm.isRunning()) {
-			arm = new MoveArm(45);
-			Scheduler.getInstance().add(arm);
-		}
-		else if(OI.armDown.get() && !arm.isRunning()) {
-			arm= new MoveArm(0);
-			Scheduler.getInstance().add(arm);
-		}
-		*/
-		if(OI.armUp.get()) {
-			RobotMap.armMaster.set(ControlMode.PercentOutput, 0.2);
-			
-		}
-		else if(OI.armDown.get()) {
-			RobotMap.armMaster.set(ControlMode.PercentOutput, -0.2);
-		}
-		else {
-			RobotMap.armMaster.set(ControlMode.PercentOutput, 0);
-		}
-		
-		System.out.println(RobotMap.armMaster.getSensorCollection().getQuadraturePosition());
-		
 	}
 
 	/**
